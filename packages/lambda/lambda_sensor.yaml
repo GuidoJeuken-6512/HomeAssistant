@@ -1,0 +1,15 @@
+counter:
+  eu08l_heat_pump_timing:
+    name: eu08l_heat_pump_timing
+    initial: 6
+  eu08l_hot_water_timing:
+    name: eu08l_hot_water_timing
+    initial: 84
+
+  eu8l_heat_pump_timing_daily:
+    name: eu08l_heat_pump_timing_daily
+    initial: 0
+
+  eu08l_hot_water_timing_daily:
+    name: eu8l_hot_water_timing_daily
+    initial: 0

@@ -1,0 +1,20 @@
+sensor:
+  - platform: template
+    sensors:
+    #### reine Einspeise PV Leistung um Statistiken zu berechnen
+      pv_einspeise_leistung:
+        friendly_name: "PV Einspeise Leistung"
+        value_template: >
+          {% if states('sensor.deye_total_grid_power') | float > 0 %}
+            0
+          {% else %}
+            {{ states('sensor.deye_total_grid_power') }}
+          {% endif %}
+        unit_of_measurement: "W"
+      
+  ##### maximale Werte / Tag ##########
+
+### PV Erzeugung Statistiken 
+
+
+

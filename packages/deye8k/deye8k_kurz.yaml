@@ -1,0 +1,508 @@
+modbus: 
+  - name: deye8k
+    type: tcp
+    host: 192.168.178.222
+    port: 502
+    sensors:
+
+## PV Values##########################################################
+    - name: "Deye PV1 Power"  
+      address: 672
+      input_type: holding
+      data_type: uint16
+      unit_of_measurement: "W"
+      precision: 0
+      scan_interval: 5
+
+    - name: "Deye PV2 Power"  
+      address: 673
+      input_type: holding
+      data_type: uint16
+      unit_of_measurement: "W"
+      precision: 0
+      scan_interval: 5
+
+ 
+
+## #####################Start Grid Values##################################################
+    - name: "Deye Total Grid Power"
+    
+      address: 625
+      input_type: holding
+      data_type: int16
+      unit_of_measurement: "W"
+      precision: 0
+      state_class: "measurement"
+      scan_interval: 5      
+      
+    - name: "Deye Grid Current L1"
+    
+      address: 630
+      input_type: holding
+      data_type: int16
+      unit_of_measurement: "A"
+      scale: 0.01
+      precision: 1
+      state_class: "measurement"
+      scan_interval: 30
+
+    - name: "Deye Grid Current L2"
+    
+      address: 631
+      input_type: holding
+      data_type: int16
+      unit_of_measurement: "A"
+      scale: 0.01
+      precision: 1
+      state_class: "measurement"
+      scan_interval: 30
+
+    - name: "Deye Grid Current L3"
+    
+      address: 632
+      input_type: holding
+      data_type: int16
+      unit_of_measurement: "A"
+      scale: 0.01
+      precision: 1
+      state_class: "measurement"
+      scan_interval: 30
+
+    - name: "Deye Grid Voltage L1"
+    
+      address: 598
+      input_type: holding
+      data_type: uint16
+      unit_of_measurement: "V"
+      scale: 0.1
+      precision: 0
+      state_class: "measurement"
+      scan_interval: 30
+
+    - name: "Deye Grid Voltage L2"
+    
+      address: 599
+      input_type: holding
+      data_type: uint16
+      unit_of_measurement: "V"
+      scale: 0.1
+      precision: 0
+      state_class: "measurement"
+      scan_interval: 30
+
+    - name: "Deye Grid Voltage L3"
+
+      address: 600
+      input_type: holding
+      data_type: uint16
+      unit_of_measurement: "V"
+      scale: 0.1
+      precision: 0
+      state_class: "measurement"
+      scan_interval: 30  
+      
+      
+## ##################### End Grid Values ##################################################
+
+### Start CT   Stromwandler (Current Transformers, CT) #############################################################   
+    - name: "Deye Internal CT L1 Power"
+    
+      address: 604
+      input_type: holding
+      data_type: int16
+      unit_of_measurement: "W"
+      precision: 0
+      state_class: "measurement"
+
+    - name: "Deye Internal CT L2 Power"
+    
+      address: 605
+      input_type: holding
+      data_type: int16
+      unit_of_measurement: "W"
+      precision: 0
+      state_class: "measurement"
+
+    - name: "Deye Internal CT L3 Power"
+    
+      address: 606
+      input_type: holding
+      data_type: int16
+      unit_of_measurement: "W"
+      precision: 0
+      state_class: "measurement"
+
+
+    - name: "Deye External CT L1 Power"
+    
+      address: 616
+      input_type: holding
+      data_type: int16
+      unit_of_measurement: "W"
+      state_class: "measurement"
+      precision: 0
+
+    - name: "Deye External CT L2 Power"
+    
+      address: 617
+      input_type: holding
+      data_type: int16
+      unit_of_measurement: "W"
+      state_class: "measurement"
+      precision: 0
+
+    - name: "Deye External CT L3 Power"
+    
+      address: 618
+      input_type: holding
+      data_type: int16
+      unit_of_measurement: "W"
+      state_class: "measurement"
+      precision: 0
+### End CT   Stromwandler (Current Transformers, CT) ############################################################# 
+###### Start Statistik ##############################
+    - name: "Deye Daily Production"
+      address: 529
+      input_type: holding
+      data_type: uint16
+      unit_of_measurement: "kWh"
+      scale: 0.1
+      precision: 1
+      state_class: "total_increasing"
+      device_class: "energy"
+      scan_interval: 30 
+
+    - name: "Deye Daily Energy Bought"
+      address: 520
+      input_type: holding
+      data_type: uint16
+      unit_of_measurement: "kWh"
+      scale: 0.1
+      precision: 1
+      state_class: "total_increasing"
+      device_class: "energy"
+      scan_interval: 30      
+
+    - name: "Deye Daily Energy Sold"
+      address: 521
+      input_type: holding
+      data_type: uint16
+      unit_of_measurement: "kWh"
+      scale: 0.1
+      precision: 1
+      state_class: "total_increasing"
+      device_class: "energy"
+      scan_interval: 30   
+      
+    - name: "Deye Total Energy Bought"
+      address: 522
+      input_type: holding
+      data_type: uint16
+      unit_of_measurement: "kWh"
+      scale: 0.1
+      precision: 1
+      state_class: "total_increasing"
+      device_class: "energy"
+      scan_interval: 30      
+
+    - name: "Deye Total Energy Sold"
+      address: 523
+      input_type: holding
+      data_type: uint16
+      unit_of_measurement: "kWh"
+      scale: 0.1
+      precision: 1
+      state_class: "total_increasing"
+      device_class: "energy"
+      scan_interval: 30    
+
+    - name: "Deye Total Consumption"
+    
+      address: 527
+      input_type: holding
+      data_type: uint32
+      unit_of_measurement: "kWh"
+      scale: 0.1
+      precision: 2
+      state_class: "total_increasing"
+      device_class: "energy"
+      scan_interval: 5
+
+    - name: "Deye active power generation of today"
+    
+      address: 502
+      input_type: holding
+      data_type: int16
+      unit_of_measurement: "kWh"
+      scale: 0.1
+      precision: 1
+      state_class: "total_increasing"
+      device_class: "energy"
+
+    - name: "Deye Grid internal - total active power"
+    
+      address: 607
+      input_type: holding
+      data_type: int16
+      unit_of_measurement: "kW"
+      scale: 0.001
+      precision: 1
+      state_class: "measurement"
+      device_class: "power"      
+
+    - name: "Deye Grid side total power"
+      address: 690
+      input_type: holding
+      data_type: int16
+      unit_of_measurement: "W"
+      precision: 0
+      state_class: "measurement"
+      scan_interval: 5
+#######????????##### funktionieren die???####
+
+
+#####?????? Ende#######################
+ 
+###### End Statistik ##############################
+##### ab hier neu ############
+
+##### start Error und StatusWerte
+    - name: "Deye Heat sink temperature"
+      address: 541
+      input_type: holding
+      data_type: int16
+      unit_of_measurement: "°C"
+      scale: 0.1
+      offset: -100
+      precision: 2
+      scan_interval: 15 
+      
+    - name: "Deye load frequency"
+      address: 655
+      input_type: holding
+      data_type: uint16
+      unit_of_measurement: "Mz"
+      scale: 0.01
+      precision: 2
+      scan_interval: 30 
+      state_class: "measurement"
+      
+    - name: "Deye inverter frequency"
+      address: 638
+      input_type: holding
+      data_type: uint16
+      unit_of_measurement: "Mz"
+      scale: 0.01
+      precision: 2
+      scan_interval: 30 
+      state_class: "measurement"
+##### Ende Error und StatusWerte
+###### Start Battery ############
+    - name: "Deye Maximum battery charge current"
+
+      address: 108
+      input_type: holding
+      unit_of_measurement: "A"
+      data_type: int16
+      precision: 0
+
+    - name: "Deye Maximum battery discharge current"
+      input_type: holding
+      address: 109
+      unit_of_measurement: "A"
+      data_type: int16
+      precision: 0
+
+    - name: "Deye Maximum battery_grid charge current"
+      input_type: holding
+      address: 128
+      unit_of_measurement: "A"
+      data_type: int16
+      precision: 0      
+
+    - name: "Deye Today_charge_of_the_battery"
+      input_type: holding
+      address: 514
+      unit_of_measurement: "kWh"
+      data_type: int16
+      precision: 0 
+      scale: 0.1
+
+    - name: "Deye Today_discharge_of_the_battery"
+      input_type: holding
+      address: 515
+      unit_of_measurement: "kWh"
+      data_type: int16
+      precision: 0 
+      scale: 0.1
+
+    - name: "Deye Total charge of the battery"
+      input_type: holding
+      address: 516
+      unit_of_measurement: "kWh"
+      data_type: int16
+      precision: 0 
+      scale: 0.1
+
+    - name: "Deye Total discharge of the battery"
+      input_type: holding
+      address: 518
+      unit_of_measurement: "kWh"
+      data_type: int16
+      precision: 0 
+      scale: 0.1
+
+    - name: "Deye battery_temperature"
+      input_type: holding
+      address: 586
+      unit_of_measurement: "°C"
+      data_type: int16
+      precision: 0 
+      scale: 0.1
+      
+    - name: "Deye battery voltage"
+      input_type: holding
+      address: 587
+      unit_of_measurement: "V"
+      data_type: int16
+      precision: 2 
+      scale: 0.01
+      
+    - name: "Deye battery capacity"
+      input_type: holding
+      address: 588
+      unit_of_measurement: "%"
+      data_type: int16
+      precision: 1 
+      
+    - name: "Deye Battery output power"
+      input_type: holding
+      address: 590
+      unit_of_measurement: "W"
+      data_type: int16
+      precision: 1 
+      
+    - name: "Deye Battery_output_current"
+      input_type: holding
+      address: 591
+      unit_of_measurement: "A"
+      data_type: int16
+      precision: 2
+      scale: 0.01 
+      
+    - name: "Deye corrected_capacity_of_the_battery"
+      input_type: holding
+      address: 592
+      unit_of_measurement: "Ah"
+      data_type: int16
+      precision: 0
+
+
+
+
+
+      ###### ende Battery ############
+
+
+#####ab hier nicht geprüft##
+  
+
+
+    - name: "Deye Daily Grid Export"
+    
+      address: 521
+      input_type: holding
+      data_type: uint32
+      unit_of_measurement: "kWh"
+      scale: 0.1
+      precision: 2
+      state_class: "total_increasing"
+      device_class: "energy" 
+      scan_interval: 30      
+      
+      
+
+
+
+    - name: "Deye Total PV Production534"
+    
+      address: 534
+      input_type: holding
+      data_type: uint16
+      unit_of_measurement: "kWh"
+      scale: 0.1
+      precision: 1
+      state_class: "total_increasing"
+      device_class: "energy"
+      
+    - name: "Deye Total PV Production535"
+    
+      address: 535
+      input_type: holding
+      data_type: uint16
+      unit_of_measurement: "kWh"
+      scale: 0.1
+      precision: 1
+      state_class: "total_increasing"
+      device_class: "energy"
+
+
+    - name: "Out-of-grid–total power"
+    
+      address: 619
+      input_type: holding
+      data_type: int16
+      unit_of_measurement: "W"
+      precision: 0
+      ##scan_interval: 2
+      state_class: "measurement"
+
+
+    - name: "Deye Load total power"
+    
+      address: 653
+      input_type: holding
+      data_type: int16
+      unit_of_measurement: "W"
+      state_class: "measurement"
+      precision: 0
+
+
+
+  ####test############
+
+####### register für total energy export
+    - name: "Deye 524"
+    
+      address: 524
+      input_type: holding
+      data_type: uint16
+      unit_of_measurement: "kWh"
+      scale: 0.1
+      precision: 1
+      state_class: "total_increasing"
+      device_class: "energy"   
+    - name: "Deye 525"
+    
+      address: 525
+      input_type: holding
+      data_type: uint16
+      unit_of_measurement: "kWh"
+      scale: 0.1
+      precision: 1
+      state_class: "total_increasing"
+      device_class: "energy"   
+
+    - name: "Deye Total PV Production"
+     ##### "Combined Register 534&535 "
+    
+      address: 534
+      input_type: holding
+      data_type: uint16
+      unit_of_measurement: "kWh"
+      scale: 0.1
+      precision: 1
+      state_class: "total_increasing"
+      device_class: "energy"
+      slave_count: 2
+

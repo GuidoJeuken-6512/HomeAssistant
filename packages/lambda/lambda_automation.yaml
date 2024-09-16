@@ -1,0 +1,52 @@
+automation:
+
+## incement counter for Lambda timings
+  - alias: Increase Counter for HP timing Heating
+    trigger:
+      platform: state
+      entity_id: sensor.eu08l_Hp1_Operating_State
+      to: '1'
+    action:
+      service: counter.increment
+      entity_id: counter.eu08l_heat_pump_timing
+  - alias: Increase Counter for HP timing hot water
+    trigger:
+      platform: state
+      entity_id: sensor.eu08l_Hp1_Operating_State
+      to: '2'
+    action:
+      service: counter.increment
+      entity_id: counter.eu08l_hot_water_timing
+## incement counter for Lambda daily timings
+  - alias: Increase Counter for HP timing Heating daily
+    trigger:
+      platform: state
+      entity_id: sensor.eu08l_Hp1_Operating_State
+      to: '1'
+    action:
+      service: counter.increment
+      entity_id: counter.eu08l_heat_pump_timing_daily
+  - alias: Increase Counter for HP timing hot water
+    trigger:
+      platform: state
+      entity_id: sensor.eu08l_Hp1_Operating_State
+      to: '2'
+    action:
+      service: counter.increment
+      entity_id: counter.eu08l_hot_water_timing_daily
+## reset daily counter at midnight
+  - alias: Reset Counter at Midnight
+    trigger:
+      platform: time
+      at: '00:00:00'
+    action:
+      service: counter.reset
+      entity_id: counter.eu08l_heat_pump_timing_daily
+  - alias: Reset Counter at Midnight
+    trigger:
+      platform: time
+      at: '00:00:00'
+    action:
+      service: counter.reset
+      entity_id: counter.eu08l_hot_water_timing_daily
+    

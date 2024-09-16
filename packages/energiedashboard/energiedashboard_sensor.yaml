@@ -1,0 +1,39 @@
+# 
+template:
+  - sensor:
+      - name: "total PV Power generated"
+        unit_of_measurement: "kW"
+        device_class: "power"
+        state_class: measurement
+      #### add power of all PV devices
+      ### values must be in "W", or must be calculated to "w"
+        state: >
+          {% set sensor1 = 'sensor.deye_total_grid_power' %}
+          {% set sensor2 = 'sensor.bkwshelly' %}
+          {% set sensor3 = 'sensor._3' %}
+          {{ (((states(sensor1) | float(0) *-1 )  + (states(sensor2) | float(0)) + (states(sensor3) | float(0))) /1000 )| round(1)}}
+          
+
+
+
+sensor:
+####   max_total_pv_power_generated statistics
+  - platform: statistics
+    name: "daily_max_total_pv_power_generated"
+    entity_id: sensor.total_pv_power_generated
+    state_characteristic: value_max
+    max_age:
+      hours: 24
+  - platform: statistics
+    name: "monthly_max_total_pv_power_generated"
+    entity_id: sensor.total_pv_power_generated
+    state_characteristic: value_max
+    max_age:
+      days: 30  
+  - platform: statistics
+    name: "yearly_max_total_pv_power_generated"
+    entity_id: sensor.total_pv_power_generated
+    state_characteristic: value_max
+    max_age:
+      days: 365
+########################################################
