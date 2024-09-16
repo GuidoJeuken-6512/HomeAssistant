@@ -1,8 +1,9 @@
 automation:
 
-## incement counter for Lambda timings
+## incement counter for Lambda total cycling
   - alias: Increase Counter for HP timing Heating
     trigger:
+      # state=1 -> Heating
       platform: state
       entity_id: sensor.eu08l_Hp1_Operating_State
       to: '1'
@@ -11,15 +12,17 @@ automation:
       entity_id: counter.eu08l_heat_pump_timing
   - alias: Increase Counter for HP timing hot water
     trigger:
+      # state=2 -> Hot Water
       platform: state
       entity_id: sensor.eu08l_Hp1_Operating_State
       to: '2'
     action:
       service: counter.increment
       entity_id: counter.eu08l_hot_water_timing
-## incement counter for Lambda daily timings
+## incement counter for Lambda daily cycling
   - alias: Increase Counter for HP timing Heating daily
     trigger:
+      # state=1 -> Heating
       platform: state
       entity_id: sensor.eu08l_Hp1_Operating_State
       to: '1'
@@ -28,6 +31,7 @@ automation:
       entity_id: counter.eu08l_heat_pump_timing_daily
   - alias: Increase Counter for HP timing hot water
     trigger:
+      # state=2 -> Hot Water
       platform: state
       entity_id: sensor.eu08l_Hp1_Operating_State
       to: '2'
