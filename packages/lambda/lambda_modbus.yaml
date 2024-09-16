@@ -16,7 +16,7 @@
     host: 192.168.178.125
     port: 502
     climates:
-        - name: Warmwasser
+        - name: Hot Water
           address: 2050
           #input_type: holding
           #count: 1
