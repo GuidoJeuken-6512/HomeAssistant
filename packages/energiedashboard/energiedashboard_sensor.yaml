@@ -1,4 +1,25 @@
+# für das Energiedashboard werden folgende Sensoren benötigt
+# PV Power "W" total, die Summe aller Sensoren aller PV Anlagen, bei mir Deye + BKW, ich sehe einen dritten Wert in der Konfiguration vor.
+##### "total PV Power generated"
+#   Daily und total Max Werte, wie viel Watt wurden maximal erzeugt, heute bzw jemals
+###### "daily_max_total_pv_power_generated" 
+###### "monthly_max_total_pv_power_generated"
+###### "yearly_max_total_pv_power_generated"
+# Erzeugte Energie kWh
+# Summe aller PV und BKW kWh
+# daily  monthly yearly statistik
 # 
+# eingespeiste Energie
+# daily monthly yearly
+#
+# eingekaufte Energie
+#  daily monthly yearly
+#
+#### Batterie ?????
+
+
+
+
 template:
   - sensor:
       - name: "total PV Power generated"
@@ -13,8 +34,6 @@ template:
           {% set sensor3 = 'sensor._3' %}
           {{ (((states(sensor1) | float(0) *-1 )  + (states(sensor2) | float(0)) + (states(sensor3) | float(0))) /1000 )| round(1)}}
           
-
-
 
 sensor:
 ####   max_total_pv_power_generated statistics

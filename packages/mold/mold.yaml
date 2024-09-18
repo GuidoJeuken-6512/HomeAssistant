@@ -1,0 +1,59 @@
+### Schimmel Sensoren, die Integartion ist im HA vorhanden, es müssen nur die Sensoren angelegt werden.
+# je sensor muss Temperatur & Luftfeuchtigkeit des Raumes und die Außentemperatur angegeben werden.
+# Ganz nett ist das ein custom:multiple-entity-row card, die alles in einem Element darstellt:
+#type: entities
+#entities:
+#  - entity: sensor.meter_e58f
+#    type: custom:multiple-entity-row
+#    name: Wohnzimmer
+#    show_state: false
+#    entities:
+#      - entity: sensor.meter_e58f
+#        name: Temperatur
+#      - entity: sensor.meter_e58f_luftfeuchtigkeit
+#        name: Humidity
+#      - entity: sensor.schimmel_wohnzimmer
+#        name: Schimmel
+sensor:  
+  - platform: mold_indicator
+    indoor_temp_sensor: sensor.temperatur_abstellraum_temperature
+    indoor_humidity_sensor: sensor.abstellraum_humidity
+    outdoor_temp_sensor: sensor.indoor_outdoor_meter_5024
+    calibration_factor: 2.0
+    name: Schimmel Abstellraum
+
+
+  - platform: mold_indicator
+    indoor_temp_sensor: sensor.thermometer_gastezimmer_temperatur
+    indoor_humidity_sensor: sensor.thermometer_gastezimmer_luftfeuchtigkeit
+    outdoor_temp_sensor: sensor.indoor_outdoor_meter_5024
+    calibration_factor: 2.0
+    name: Schimmel Gaestezimmer
+
+  - platform: mold_indicator
+    indoor_temp_sensor: sensor.bad_1og
+    indoor_humidity_sensor: sensor.meter_5e55_luftfeuchtigkeit
+    outdoor_temp_sensor: sensor.indoor_outdoor_meter_5024
+    calibration_factor: 2.0
+    name: Schimmel Bad 1OG
+
+  - platform: mold_indicator
+    indoor_temp_sensor: sensor.thermometer_2og_bad_temperatur
+    indoor_humidity_sensor: sensor.thermometer_2og_bad_luftfeuchtigkeit
+    outdoor_temp_sensor: sensor.indoor_outdoor_meter_5024
+    calibration_factor: 2.0
+    name: Schimmel Bad 2OG
+
+  - platform: mold_indicator
+    indoor_temp_sensor: sensor.thermometer_schlafzimmer_temperatur
+    indoor_humidity_sensor: sensor.thermometer_schlafzimmer_luftfeuchtigkeit
+    outdoor_temp_sensor: sensor.indoor_outdoor_meter_5024
+    calibration_factor: 2.0
+    name: Schimmel Schlafzimmer
+    
+  - platform: mold_indicator
+    indoor_temp_sensor: sensor.meter_e58f
+    indoor_humidity_sensor: sensor.meter_e58f_luftfeuchtigkeit
+    outdoor_temp_sensor: sensor.indoor_outdoor_meter_5024
+    calibration_factor: 2.0
+    name: Schimmel Wohnzimmer
