@@ -1,8 +1,30 @@
+# modbus config for a deye inverter 3P 8k sun-8k-sg04lp3-eu
+# just change name/host/ port to get values of your inverter
+# in the moment my deye inverter has no slave ID configured, if your have, add slave: n to each sensor.
+# some Values must be combined from two registers because of the 16bit restriction of a modbus register.
+### these sensors are marked as "high&low" in the modbus config from deye.
+# to combine theme, use this syntax:
+#    - name: "Deye Total PV Production"
+#     ##### "Combined Register 534&535 "   
+#      address: 534
+#      input_type: holding
+#      data_type: uint16
+#      unit_of_measurement: "kWh"
+#      scale: 0.1
+#      precision: 1
+#      state_class: "total_increasing"
+#      device_class: "energy"
+#      slave_count: 2
+### slave_count: 2 combines the register 534&535 to one sensor
+
+
 modbus: 
   - name: deye8k
     type: tcp
     host: 192.168.178.222
     port: 502
+
+
     sensors:
 
 ## PV Values##########################################################
@@ -505,4 +527,3 @@ modbus:
       state_class: "total_increasing"
       device_class: "energy"
       slave_count: 2
-
