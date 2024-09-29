@@ -136,6 +136,7 @@ modbus:
       precision: 0
       state_class: "measurement"
 
+
     - name: "Deye Internal CT L2 Power"
     
       address: 605
@@ -163,6 +164,7 @@ modbus:
       unit_of_measurement: "W"
       state_class: "measurement"
       precision: 0
+      scan_interval: 5
 
     - name: "Deye External CT L2 Power"
     
@@ -172,6 +174,7 @@ modbus:
       unit_of_measurement: "W"
       state_class: "measurement"
       precision: 0
+      scan_interval: 5
 
     - name: "Deye External CT L3 Power"
     
@@ -181,6 +184,7 @@ modbus:
       unit_of_measurement: "W"
       state_class: "measurement"
       precision: 0
+      scan_interval: 5
 ### End CT   Stromwandler (Current Transformers, CT) ############################################################# 
 ###### Start Statistik ##############################
     - name: "Deye Daily Production"
@@ -436,7 +440,7 @@ modbus:
       input_type: holding
       data_type: uint32
       unit_of_measurement: "kWh"
-      scale: 0.1
+      scale: 0.001
       precision: 2
       state_class: "total_increasing"
       device_class: "energy" 

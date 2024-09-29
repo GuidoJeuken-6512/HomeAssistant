@@ -1,0 +1,167 @@
+sensor:
+
+##### Shelly BKW kWh berechnen ######
+  - platform: integration
+    source: sensor.shellypmminig3_84fce636d384_power
+    name: BKW_energy_calc
+    unit_prefix: k
+    round: 2
+##### Shelly BKW kWh daily berechnen
+  - platform: statistics
+    name: daily_BKW_energy_statistics
+    entity_id: sensor.BKW_energy_calc
+    state_characteristic: value_max
+    max_age:
+      days: 1
+
+#### werte von deye und BKW addieren zu PV Leistung####
+  - platform: template
+    sensors:
+      pv_einspeise_leistung:
+        friendly_name: "pv_einspeise_leistung Deye & BKW"
+        unit_of_measurement: 'W'
+        device_class: power
+        value_template: >
+          {% set sensor1 = states('sensor.deye_total_grid_power') | float %}
+          {% set sensor2 = states('sensor.shellypmminig3_84fce636d384_power') | float %}   
+          {% if sensor2 < 0 %}
+            {% set value2 = sensor2 %}
+          {% else %}
+            {% set value2 = (sensor2 * -1) %}
+          {% endif %}
+          {{ sensor1 + value2 }}
+
+
+      
+  ##### maximale Werte / Tag ##########
+  - platform: statistics
+    name: daily_max_pv_einspeise_leistung
+    entity_id: sensor.pv_einspeise_leistung
+    state_characteristic: value_max
+    max_age:
+      days: 1
+  - platform: statistics
+    name: abs_max_pv_einspeise_leistung
+    entity_id: sensor.pv_einspeise_leistung
+    state_characteristic: value_max
+    max_age:
+      days: 9999999
+### CT Werte  
+#### aus Grid gezogen (bought)#####################
+  - platform: template
+    sensors:
+      deye_total_external_ct_power_bought_calc:
+        friendly_name: "deye_total_grid_power_bought_calc"
+        unit_of_measurement: 'W'
+        value_template: >
+          {% set a = states('sensor.deye_external_ct_l1_power') | float(0) %}
+          {% set b = states('sensor.deye_external_ct_l2_power') | float(0) %}
+          {% set c = states('sensor.deye_external_ct_l3_power') | float(0) %}
+          {% if(a + b + c) > 0 %}
+            {{ (a + b + c) | round(0) }}
+          {%else%} 
+            {{0 | float()}}  
+          {% endif %}
+
+        device_class: power
+
+
+  - platform: integration
+    source: sensor.deye_total_external_ct_power_bought_calc
+    name: deye_total_external_ct_energy_bought_calc
+    unit_prefix: k
+    round: 2
+
+
+
+#### ins Grid eingespeist (sold)#####################
+  - platform: template
+    sensors:
+      deye_total_external_ct_power_sold_calc:
+        friendly_name: "deye_total_grid_power_sold_calc"
+        unit_of_measurement: 'W'
+        value_template: >
+          {% set a1 = states('sensor.deye_external_ct_l1_power') | float(0) %}
+          {% set b1 = states('sensor.deye_external_ct_l2_power') | float(0) %}
+          {% set c1 = states('sensor.deye_external_ct_l3_power') | float(0) %}
+          {% if (a1 + b1 + c1) < 0 %} 
+              {{ (a1 + b1 + c1) | round(0) }}
+          {%else%} 
+              {{0 | float() }}   
+          {% endif %}
+        device_class: power
+
+
+  - platform: integration
+    source: sensor.deye_total_external_ct_power_sold_calc
+    name: deye_total_external_ct_energy_sold_calc
+    unit_prefix: k
+    round: 2
+
+#### Hausverbrauch errechnen (solar Produktion + Grid Buy - Grid sell)
+
+
+  - platform: template
+    sensors:
+      total_load_calc:
+        friendly_name: "Hausverbrauch berechnet"
+        unit_of_measurement: 'kWh'
+        value_template: >
+          {% set a2 = states('sensor.deye_daily_production') | float(0) %}
+          {% set b2 = states('sensor.deye_total_external_ct_energy_bought_calc') | float(0) %}
+          {% set c2 = states('sensor.deye_total_external_ct_energy_sold_calc') | float(0) %}
+          {{ (a2 + b2 + c2) +  (states('input_number.zaehlerstand') |float() |round(2))}}
+        device_class: energy
+
+
+  - platform: statistics
+    name: daily_energy_sold_statistics
+    entity_id: sensor.deye_total_external_ct_energy_sold_calc
+    state_characteristic: value_min
+    max_age:
+      days: 1
+
+  - platform: statistics
+    name: monthly_energy_sold_statistics
+    entity_id: sensor.deye_total_external_ct_energy_sold_calc
+    state_characteristic: value_min
+    max_age:
+      days: 30
+
+  - platform: statistics
+    name: yearly_energy_sold_statistics
+    entity_id: sensor.deye_total_external_ct_energy_sold_calc
+    state_characteristic: value_min
+    max_age:
+      days: 365
+
+  - platform: statistics
+    name: daily_energy_bought_statistics
+    entity_id: sensor.deye_total_external_ct_energy_bought_calc
+    state_characteristic: value_max
+    max_age:
+      days: 1
+
+  - platform: statistics
+    name: monthly_energy_bought_statistics
+    entity_id: sensor.deye_total_external_ct_energy_bought_calc
+    state_characteristic: value_max
+    max_age:
+      days: 30
+
+  - platform: statistics
+    name: yearly_energy_bought_statistics
+    entity_id: sensor.deye_total_external_ct_energy_bought_calc
+    state_characteristic: value_max
+    max_age:
+      days: 365
+
+### Helper für den Zählerstand, werte werden addiert / Subtraiert ######
+input_number:
+  zaehlerstand:
+    name: "zaehlerstand"
+    initial: 50042.00
+    min: 0
+    max: 1000000
+    step: 0.01
+

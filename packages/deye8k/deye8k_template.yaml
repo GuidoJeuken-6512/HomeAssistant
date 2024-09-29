@@ -1,20 +1,30 @@
+#####
+
+#### Helper   ################################
+input_number:
+  zaehlerstand:
+  ## helper um den aktuellen Zählerstand berechnen zu können (dieser Helper+total import)
+    name: Zählerstand helper
+    initial: 50310.9
+    min: 0
+    max: 99999
+    step: 0.01
+    
+        
+#### Sensoren   ################################
 sensor:
   - platform: template
     sensors:
-    #### reine Einspeise PV Leistung um Statistiken zu berechnen
-      pv_einspeise_leistung:
-        friendly_name: "PV Einspeise Leistung"
-        value_template: >
-          {% if states('sensor.deye_total_grid_power') | float > 0 %}
-            0
-          {% else %}
-            {{ states('sensor.deye_total_grid_power') }}
-          {% endif %}
+      zaehlerstand:
+        friendly_name: "Zählerstand berechnet"
+        unit_of_measurement: "kWh"
+        value_template: "{{ (states('input_number.zaehlerstand') | float + states('sensor.deye_total_energy_import') | float -  states('sensor.deye_total_energy_export') | float)| round(2) }}"
+#### PV Power berechnet ######
+## PV1 + PV2 + BKW
+  - platform: template
+    sensors:
+      pv_power_sum_calc:
+        friendly_name: "PV Power berechnet (beide Strings + BWK)"
+        ## bkw fehlt noch
         unit_of_measurement: "W"
-      
-  ##### maximale Werte / Tag ##########
-
-### PV Erzeugung Statistiken 
-
-
-
+        value_template: "{{ (states('sensor.deye_pv1_power') | float + states('sensor.deye_pv2_power') | float )| round(2) }}"

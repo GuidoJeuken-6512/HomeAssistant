@@ -1,0 +1,166 @@
+# modbus config for a deye inverter 3P 8k sun-8k-sg04lp3-eu
+# just change name/host/ port to get values of your inverter
+# in the moment my deye inverter has no slave ID configured, if your have, add slave: n to each sensor.
+# some Values must be combined from two registers because of the 16bit restriction of a modbus register.
+### these sensors are marked as "high&low" in the modbus config from deye.
+# to combine theme, use this syntax:
+#    - name: "Deye Total PV Production"
+#     ##### "Combined Register 534&535 "   
+#      address: 534
+#      input_type: holding
+#      data_type: uint16
+#      unit_of_measurement: "kWh"
+#      scale: 0.1
+#      precision: 1
+#      state_class: "total_increasing"
+#      device_class: "energy"
+#      slave_count: 2
+### slave_count: 2 combines the register 534&535 to one sensor
+
+
+modbus: 
+  - name: deye8k
+    type: tcp
+    host: 192.168.178.222
+    port: 502
+
+
+    sensors:
+## PV Values##########################################################
+    - name: "Deye PV1 Power"  
+    ## Power String 1 (Gartenseite)
+      address: 672
+      input_type: holding
+      data_type: uint16
+      unit_of_measurement: "W"
+      precision: 0
+      #scan_interval: 5
+
+    - name: "Deye PV2 Power"  
+    ## Power String 2 vorne
+      address: 673
+      input_type: holding
+      data_type: uint16
+      unit_of_measurement: "W"
+      precision: 0
+      #scan_interval: 5
+      
+###  totals     
+    - name: "Deye Total PV Energy"
+     ##### "Combined Register 534&535"
+     ## gesamte erzeugte PV Energy vor Verlusten"
+      address: 534
+      input_type: holding
+      data_type: uint16
+      unit_of_measurement: "kWh"
+      scale: 0.1
+      precision: 1
+      state_class: "total_increasing"
+      device_class: "energy"
+      slave_count: 2      
+
+    - name: "Deye Total Grid Power"
+    ## abgegebene Leistung ans Netz nach Verlusten
+      address: 625
+      input_type: holding
+      data_type: int16
+      unit_of_measurement: "W"
+      precision: 0
+      state_class: "measurement"
+      
+    - name: "Deye Load total power"
+    ## Stromaufnahme aus Netz (Hausverbrauch)##
+      address: 653
+      input_type: holding
+      data_type: int16
+      unit_of_measurement: "W"
+      state_class: "measurement"
+      precision: 0
+      
+    - name: "Deye Total Energy Export"
+     ##### "Combined Register 524&525"
+     ## gesamte exportierte PV Energy"
+      address: 524
+      input_type: holding
+      data_type: uint16
+      unit_of_measurement: "kWh"
+      scale: 0.1
+      precision: 1
+      state_class: "total_increasing"
+      device_class: "energy"
+      slave_count: 2 
+      
+    - name: "Deye Total Load Consumption"
+     ##### "Combined Register 527&528"
+     ## gesamte Energie Hausverbrauch ##"
+      address: 527
+      input_type: holding
+      data_type: uint16
+      unit_of_measurement: "kWh"
+      scale: 0.1
+      precision: 1
+      state_class: "total_increasing"
+      device_class: "energy"
+      slave_count: 2 
+      
+    - name: "Deye Total Energy Import"
+     ##### "Combined Register 522&523"
+     ## gesamte Energie Import aus Grid ##"
+      address: 522
+      input_type: holding
+      data_type: uint16
+      unit_of_measurement: "kWh"
+      scale: 0.1
+      precision: 1
+      state_class: "total_increasing"
+      device_class: "energy"
+      slave_count: 2 
+      
+#### Tageswerte ###########
+    - name: "Deye Daily PV Production"
+    ## heutige PV Produktion ######
+      address: 529
+      input_type: holding
+      data_type: uint16
+      unit_of_measurement: "kWh"
+      scale: 0.1
+      precision: 1
+      state_class: "total_increasing"
+      device_class: "energy"
+#      scan_interval: 30 
+      
+    - name: "Deye Daily Energy Sold"
+    ## heutiger Energie Export ##
+      address: 521
+      input_type: holding
+      data_type: uint16
+      unit_of_measurement: "kWh"
+      scale: 0.1
+      precision: 1
+      state_class: "total_increasing"
+      device_class: "energy"
+ #     scan_interval: 30  
+      
+    - name: "Deye Daily Energy Bought"
+    ## heutige Stromeinkauf ###
+      address: 520
+      input_type: holding
+      data_type: uint16
+      unit_of_measurement: "kWh"
+      scale: 0.1
+      precision: 1
+      state_class: "total_increasing"
+      device_class: "energy"
+  #    scan_interval: 30 
+      
+    - name: "Deye Daily Energy Load"
+    ## heutige StromVerbrauch ###
+      address: 526
+      input_type: holding
+      data_type: uint16
+      unit_of_measurement: "kWh"
+      scale: 0.1
+      precision: 1
+      state_class: "total_increasing"
+      device_class: "energy"
+   #   scan_interval: 30 
