@@ -1,6 +1,9 @@
 # My Home Assistant configuration. 
 
 I've installed HA on an HP mini PC under proxmox. (CPU i3 / 16GB RAM / 500 GB SSD)
+
+You can find out more about me and my smart home installation here: https://homeassistant.com.de/
+
 My HA configuration uses packages, so if you whant to use anything of my configuration, take a look at https://www.home-assistant.io/docs/configuration/packages/.
 
 To use packages, add this lines in your configuration.yaml 
