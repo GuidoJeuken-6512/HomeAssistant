@@ -9,7 +9,7 @@ To use packages, add this lines in your configuration.yaml
 ```
 Then copy the yaml files into your preferred sub-structure under \packages.
 
-Files with a suffix similar to .yaml.1 are working copies for me, or older code that I still want to keep
+Files with a suffix similar to .yaml.1 are working copies for me, or older code that I still want to keep. Please ignore these files, or use them very carefully.
 
 Packages splits the configuration, so it is possible to divide by topic, not just by “automation” / “sensor” / “scenes” etc.
 I have created a package for each major topic. At the moment the following packages are documented:
