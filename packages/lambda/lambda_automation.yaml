@@ -1,56 +1,60 @@
-automation:
-
-## incement counter for Lambda total cycling
-  - alias: Increase Counter for HP timing Heating
+  automation:
+  - id: '1727726999508'
+    alias: increment HP Timings
+    description: Tacktungen der WP hochzählen
     trigger:
-      # state=1 -> Heating
-      platform: state
-      entity_id: sensor.eu08l_Hp1_Operating_State
+    - platform: state 
+      entity_id:
+      - sensor.eu08l_hp1_operating_state
       to: '1'
-    action:
-      service: counter.increment
-      entity_id: counter.eu08l_heat_pump_timing
-  - alias: Increase Counter for HP timing hot water
-    trigger:
-      # state=2 -> Hot Water
-      platform: state
-      entity_id: sensor.eu08l_Hp1_Operating_State
-      to: '2'
-    action:
-      service: counter.increment
-      entity_id: counter.eu08l_hot_water_timing
-## incement counter for Lambda daily cycling
-  - alias: Increase Counter for HP timing Heating daily
-    trigger:
-      # state=1 -> Heating
-      platform: state
-      entity_id: sensor.eu08l_Hp1_Operating_State
+      id: Heating
+    - platform: state
+      entity_id:
+      - sensor.eu08l_hp1_operating_state
       to: '1'
+      id: HotWater
+    condition: []
     action:
-      service: counter.increment
-      entity_id: counter.eu08l_heat_pump_timing_daily
-  - alias: Increase Counter for HP timing hot water
+    - choose:
+      - conditions:
+        - condition: trigger
+          id:
+          - Heating
+        sequence:
+        - action: counter.increment
+          metadata: {}
+          data: {}
+          target:
+            entity_id:
+            - counter.eu08l_heat_pump_timing
+            - counter.eu8l_heat_pump_timing_daily
+      - conditions:
+        - condition: trigger
+          id:
+          - HotWater
+        sequence:
+        - action: counter.increment
+          metadata: {}
+          data: {}
+          target:
+            entity_id:
+            - counter.eu08l_hot_water_timing
+            - counter.eu08l_hot_water_timing_daily
+    mode: single
+  - id: '1727727092095'
+    alias: reset counter for daily HP timing
+    description: Zähler für daily tacktung WP resetten
     trigger:
-      # state=2 -> Hot Water
-      platform: state
-      entity_id: sensor.eu08l_Hp1_Operating_State
-      to: '2'
+    - platform: time
+      at: 00:00:00
+    condition: []
     action:
-      service: counter.increment
-      entity_id: counter.eu08l_hot_water_timing_daily
-## reset daily counter at midnight
-  - alias: Reset Counter at Midnight
-    trigger:
-      platform: time
-      at: '00:00:00'
-    action:
-      service: counter.reset
-      entity_id: counter.eu08l_heat_pump_timing_daily
-  - alias: Reset Counter at Midnight
-    trigger:
-      platform: time
-      at: '00:00:00'
-    action:
-      service: counter.reset
-      entity_id: counter.eu08l_hot_water_timing_daily
-    
+    - action: counter.reset
+      metadata: {}
+      data: {}
+      target:
+        entity_id:
+        - counter.eu8l_heat_pump_timing_daily
+        - counter.eu08l_hot_water_timing_daily
+    mode: single
+  
