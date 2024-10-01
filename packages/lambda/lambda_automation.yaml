@@ -1,4 +1,6 @@
   automation:
+  ### heat pump cycling counter ############################
+  ####### the initial values for the cycling must be taken once from the Lambda heat pump and entered into the sensor.
   - id: '1727726999508'
     alias: increment HP Timings
     description: Tacktungen der WP hochzählen

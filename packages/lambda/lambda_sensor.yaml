@@ -1,4 +1,5 @@
 counter:
+
 ## to monitor the heat pump's cycling, here are the sensors.
   eu08l_heat_pump_timing:
     name: eu08l_heat_pump_timing
