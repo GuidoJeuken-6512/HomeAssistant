@@ -1,17 +1,17 @@
 counter:
 
 ## to monitor the heat pump's cycling, here are the sensors.
-  eu08l_heat_pump_timing:
-    name: eu08l_heat_pump_timing
+  eu08l_heat_pump_cycling:
+    name: eu08l_heat_pump_cycling
     initial: 6
-  eu08l_hot_water_timing:
-    name: eu08l_hot_water_timing
+  eu08l_hot_water_cycling:
+    name: eu08l_hot_water_cycling
     initial: 84
 
-  eu8l_heat_pump_timing_daily:
-    name: eu08l_heat_pump_timing_daily
+  eu8l_heat_pump_cycling_daily:
+    name: eu08l_heat_pump_cycling_daily
     initial: 0
 
-  eu08l_hot_water_timing_daily:
-    name: eu8l_hot_water_timing_daily
+  eu08l_hot_water_cycling_daily:
+    name: eu8l_hot_water_cycling_daily
     initial: 0
