@@ -13,7 +13,7 @@
     - platform: state
       entity_id:
       - sensor.eu08l_hp1_operating_state
-      to: '1'
+      to: '2'
       id: HotWater
     condition: []
     action:
