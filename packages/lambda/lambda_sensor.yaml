@@ -18,11 +18,11 @@ counter:
     initial: 0
   ## here the counter for total cyceling values. they will also be incresed as the daily cyceling counter
   eu8l_heat_pump_cycling_diff:
-    name: eu08l_heat_pump_cycling_daily
+    name: eu08l_heat_pump_cycling_diff
     initial: 0
 
   eu08l_hot_water_cycling_diff:
-    name: eu8l_hot_water_cycling_daily
+    name: eu8l_hot_water_cycling_diff
     initial: 0
 # In order to show total cyceling values in the dashboard and to persist them in the DB, we have to add the cyceling_start & cyceleing_diff Values 
 sensor:
