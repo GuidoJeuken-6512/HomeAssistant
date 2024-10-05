@@ -8,36 +8,36 @@ sensor:
       eu08l_ambient_operating_state_txt:
         friendly_name: "eu08l_Ambient_Operating_State_txt"
         value_template: >
-          {{ ['Off', 'Automatik', 'Manual', 'Error'][states('sensor.eu08l_ambient_operating_state')|int] }}
+          {{ ['Off', 'Automatik', 'Manual', 'Error'][states('sensor.eu08l_ambient_operating_state')|int(0)] }}
       eu08l_emgr_operating_state_txt:
         friendly_name: "eu08l_EMgr_Operating_State_txt"
         value_template: >
-          {{ ['Off', 'Automatik', 'Manual', 'Error', 'Offline'][states('sensor.eu08l_emgr_operating_state')|int] }}
+          {{ ['Off', 'Automatik', 'Manual', 'Error', 'Offline'][states('sensor.eu08l_emgr_operating_state')|int(0)] }}
       eu08l_hp1_error_state_txt:
         friendly_name: "eu08l_Hp1_Error_State_txt"
         value_template: >
-          {{ ['OK', 'Message', 'Warning', 'Alarm', 'Fault'][states('sensor.eu08l_hp1_error_state')|int] }}
+          {{ ['OK', 'Message', 'Warning', 'Alarm', 'Fault'][states('sensor.eu08l_hp1_error_state')|int(0)] }}
       eu08l_hp1_state_txt:
         friendly_name: "eu08l_Hp1_State_txt"
         value_template: >
-          {{ ['Init', 'Reference', 'Restart-Block', 'Ready', 'Start Pumps', 'Start Compressor', 'Pre-Regulation', 'Regulation', 'Not Used', 'Cooling', 'Defrosting', 'Not Used', 'Not Used', 'Not Used', 'Not Used', 'Not Used', 'Not Used', 'Not Used', 'Not Used', 'Not Used', 'Stopping', 'Not Used', 'Not Used', 'Not Used', 'Not Used', 'Not Used', 'Not Used', 'Not Used', 'Not Used', 'Not Used', 'Not Used', 'Fault-Lock', 'Alarm-Block', 'Not Used', 'Not Used', 'Not Used', 'Not Used', 'Not Used', 'Not Used', 'Not Used', 'Not Used', 'Error-Reset'][states('sensor.eu08l_hp1_state')|int] }}
+          {{ ['Init', 'Reference', 'Restart-Block', 'Ready', 'Start Pumps', 'Start Compressor', 'Pre-Regulation', 'Regulation', 'Not Used', 'Cooling', 'Defrosting', 'Not Used', 'Not Used', 'Not Used', 'Not Used', 'Not Used', 'Not Used', 'Not Used', 'Not Used', 'Not Used', 'Stopping', 'Not Used', 'Not Used', 'Not Used', 'Not Used', 'Not Used', 'Not Used', 'Not Used', 'Not Used', 'Not Used', 'Not Used', 'Fault-Lock', 'Alarm-Block', 'Not Used', 'Not Used', 'Not Used', 'Not Used', 'Not Used', 'Not Used', 'Not Used', 'Not Used', 'Error-Reset'][states('sensor.eu08l_hp1_state')|int(0)] }}
       eu08l_hp1_operating_state_txt:
         friendly_name: "eu08l_Hp1_Operating_State_txt"
         value_template: >
-          {{ ['Standby', 'Heizung', 'WW-Bereitung', 'Cold Climate', 'Circulation', 'Defrost', 'Off', 'Frost', 'Standby-Frost', 'Not used', 'Sommer', 'Ferienbetrieb', 'Error', 'Warning', 'Info-Message', 'Time-Block', 'Release-Block', 'Mintemp-Block', 'Firmware-Download'][states('sensor.eu08l_hp1_operating_state')|int] }}
+          {{ ['Standby', 'Heizung', 'WW-Bereitung', 'Cold Climate', 'Circulation', 'Defrost', 'Off', 'Frost', 'Standby-Frost', 'Not used', 'Sommer', 'Ferienbetrieb', 'Error', 'Warning', 'Info-Message', 'Time-Block', 'Release-Block', 'Mintemp-Block', 'Firmware-Download'][states('sensor.eu08l_hp1_operating_state')|int(0)] }}
       eu08l_hp1_request_type_txt:
         friendly_name: "eu08l_Hp1_Request_Type_txt"
         value_template: >
-          {{ ['No Request', 'Flow Pump Circulation', 'Central Heating', 'Central Cooling', 'Domestic Hot Water'][states('sensor.eu08l_hp1_request_type')|int] }}
+          {{ ['No Request', 'Flow Pump Circulation', 'Central Heating', 'Central Cooling', 'Domestic Hot Water'][states('sensor.eu08l_hp1_request_type')|int(0)] }}
       eu08l_boil1_operating_state_txt:
         friendly_name: "eu08l_Boil1_Operating_State_txt"
         value_template: >
-          {{ ['Standby', 'Domestic Hot Water', 'Legio', 'Summer', 'Frost', 'Holiday', 'Prio-Stop', 'Error', 'Off', 'Prompt-DHW', 'Trailing-Stop', 'Temp-Lock', 'Standby-Frost'][states('sensor.eu08l_boil1_operating_state')|int] }}
+          {{ ['Standby', 'Domestic Hot Water', 'Legio', 'Summer', 'Frost', 'Holiday', 'Prio-Stop', 'Error', 'Off', 'Prompt-DHW', 'Trailing-Stop', 'Temp-Lock', 'Standby-Frost'][states('sensor.eu08l_boil1_operating_state')|int(0)] }}
       eu08l_hc1_operating_state_txt:
         friendly_name: "eu08l_Hc1_Operating_State_txt"
         value_template: >
-          {{ ['Heating', 'Eco', 'Cooling', 'Floor-dry', 'Frost', 'Max-Temp', 'Error', 'Service', 'Holiday', 'Central Heating Summer', 'Central Cooling Winter', 'Prio-Stop', 'Off', 'Release-Off', 'Time-Off', 'Standby', 'Standby-Heating', 'Standby-Eco', 'Standby-Cooling', 'Standby-Frost', 'Standby-Floor-dry'][states('sensor.eu08l_hc1_operating_state')|int] }}
+          {{ ['Heating', 'Eco', 'Cooling', 'Floor-dry', 'Frost', 'Max-Temp', 'Error', 'Service', 'Holiday', 'Central Heating Summer', 'Central Cooling Winter', 'Prio-Stop', 'Off', 'Release-Off', 'Time-Off', 'Standby', 'Standby-Heating', 'Standby-Eco', 'Standby-Cooling', 'Standby-Frost', 'Standby-Floor-dry'][states('sensor.eu08l_hc1_operating_state')|int(0)] }}
       eu08l_hc1_operating_mode_txt:
         friendly_name: "eu08l_Hc1_Operating_Mode_txt"
         value_template: >
-          {{ ['Off', 'Manual', 'Automatik', 'Auto-Heating', 'Auto-Cooling', 'Frost', 'Summer', 'Floor-dry'][states('sensor.eu08l_hc1_operating_mode')|int] }}
+          {{ ['Off', 'Manual', 'Automatik', 'Auto-Heating', 'Auto-Cooling', 'Frost', 'Summer', 'Floor-dry'][states('sensor.eu08l_hc1_operating_mode')|int(0)] }}
