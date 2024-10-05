@@ -28,7 +28,7 @@
           data: {}
           target:
             entity_id:
-            - counter.eu08l_heat_pump_cycling
+            - counter.eu8l_heat_pump_cycling_diff
             - counter.eu8l_heat_pump_cycling_daily
       - conditions:
         - condition: trigger
@@ -40,7 +40,7 @@
           data: {}
           target:
             entity_id:
-            - counter.eu08l_hot_water_cycling
+            - counter.eu08l_hot_water_cycling_diff
             - counter.eu08l_hot_water_cycling_daily
     mode: single
   - id: '1727727092095'

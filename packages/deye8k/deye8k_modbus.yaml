@@ -34,6 +34,7 @@ modbus:
       data_type: uint16
       unit_of_measurement: "W"
       precision: 0
+      state_class: "measurement"
       #scan_interval: 5
 
     - name: "Deye PV2 Power"  
@@ -43,6 +44,7 @@ modbus:
       data_type: uint16
       unit_of_measurement: "W"
       precision: 0
+      state_class: "measurement"
       #scan_interval: 5
       
 ###  totals     

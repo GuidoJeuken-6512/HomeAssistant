@@ -3,11 +3,11 @@ counter:
 ## you have to take the initial values from the lambda
   eu08l_heat_pump_cycling_start:
     name: eu08l_heat_pump_cycling_start
-    initial: 23
+    initial: 27
   eu08l_hot_water_cycling_start:
     name: eu08l_hot_water_cycling_start
-    initial: 103
-## here are the counters for the daily tacktung, 
+    initial: 105
+## here are the counters for the daily cyceling, 
 ## they are increased via the automation when the Lambda sets the sensor “sensor.eu08l_hp1_operating_state” to 1 = heating or 2 = hot water
   eu8l_heat_pump_cycling_daily:
     name: eu08l_heat_pump_cycling_daily
@@ -16,8 +16,15 @@ counter:
   eu08l_hot_water_cycling_daily:
     name: eu8l_hot_water_cycling_daily
     initial: 0
+  ## here the counter for total cyceling values. they will also be incresed as the daily cyceling counter
+  eu8l_heat_pump_cycling_diff:
+    name: eu08l_heat_pump_cycling_daily
+    initial: 0
 
-# In order to persist and make the total number of cycels evaluable, here are the senors 
+  eu08l_hot_water_cycling_diff:
+    name: eu8l_hot_water_cycling_daily
+    initial: 0
+# In order to show total cyceling values in the dashboard and to persist them in the DB, we have to add the cyceling_start & cyceleing_diff Values 
 sensor:
   - platform: template
     sensors:
@@ -25,7 +32,7 @@ sensor:
         friendly_name: "eu08l_hot_water_cycling"
         value_template: >
           {% set count1 = states('counter.eu08l_hot_water_cycling_start') | int(0) %}
-          {% set count2 = states('counter.eu8l_hot_water_cycling_daily') | int(0) %}
+          {% set count2 = states('counter.eu8l_hot_water_cycling_diff') | int(0) %}
           {{ count1 + count2 }}
   - platform: template
     sensors:
@@ -33,5 +40,5 @@ sensor:
         friendly_name: "eu08l_heat_pump_cycling"
         value_template: >
           {% set count1 = states('counter.eu08l_heat_pump_cycling_start') | int(0) %}
-          {% set count2 = states('counter.eu08l_heat_pump_cycling_daily') | int(0) %}
+          {% set count2 = states('counter.eu08l_heat_pump_cycling_diff') | int(0) %}
           {{ count1 + count2 }}
