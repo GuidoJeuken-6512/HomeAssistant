@@ -28,3 +28,44 @@ sensor:
         ## bkw fehlt noch
         unit_of_measurement: "W"
         value_template: "{{ (states('sensor.deye_pv1_power') | float(0) + states('sensor.deye_pv2_power') | float(0) )| round(2) }}"
+#### max and daily max power sensors
+##### PV1#####
+  -   platform: statistics
+      name: "PV1 Power Max"
+      entity_id: sensor.deye_pv1_power
+      state_characteristic: value_max
+      max_age:
+        days: 9999
+  -   platform: statistics
+      name: "PV1 Power daily Max"
+      entity_id: sensor.deye_pv1_power
+      state_characteristic: value_max
+      max_age:
+        hours: 24
+###### PV2 
+  -   platform: statistics
+      name: "PV2 Power Max"
+      entity_id: sensor.deye_pv2_power
+      state_characteristic: value_max
+      max_age:
+        days: 9999
+  -   platform: statistics
+      name: "PV2 Power daily Max"
+      entity_id: sensor.deye_pv2_power
+      state_characteristic: value_max
+      max_age:
+        hours: 24
+
+### pv_power_sum_calc
+  -   platform: statistics
+      name: "PV total Power Max"
+      entity_id: sensor.pv_power_sum_calc
+      state_characteristic: value_max
+      max_age:
+        days: 9999
+  -   platform: statistics
+      name: "PV total Power daily Max"
+      entity_id: sensor.pv_power_sum_calc
+      state_characteristic: value_max
+      max_age:
+        hours: 24

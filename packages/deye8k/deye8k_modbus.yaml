@@ -43,7 +43,6 @@ modbus:
       input_type: holding
       data_type: uint16
       unit_of_measurement: "W"
-      precision: 0
       state_class: "measurement"
       #scan_interval: 5
       
