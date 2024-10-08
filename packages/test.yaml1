@@ -1,0 +1,78 @@
+  # Lambda WP Modbus/TCP Integration
+  # based on Lambda Modbus specification dated 11.04.2023
+  # Change name according to your requirements, host to the IP of your heatpump
+  # 
+  # this is a package file, place it in \packages\lambda
+  # reminde each packagefile-name must be unique!
+  # append the following code to the configuration.yaml in your HA-installation!
+  ##    homeassistant:
+  ##  packages: !include_dir_named packages
+    
+  #########  
+  
+ modbus:   
+  - name: "EU08L"
+    type: tcp
+    host: 192.168.178.125
+    port: 502
+
+## climate sensor to be able to adjust the hot water temperature   
+    climates:
+        - name: Hot Water
+          address: 2050
+          #input_type: holding
+          #count: 1
+          #data_type: int16
+          max_temp: 60
+          min_temp: 40
+          #offset: 0
+          precision: 1
+          scale: 0.1
+          #structure: ">f"
+          target_temp_register: 2050
+          target_temp_write_registers: true
+          temp_step: 1
+          temperature_unit: C
+        - name: Room termometer
+          address: 5004
+          input_type: holding
+          #count: 1
+          data_type: int16
+          max_temp: 35
+          min_temp: 15
+          #offset: 0
+          precision: 1
+          scale: 0.1
+          #structure: ">f"
+          target_temp_register: 5004
+          target_temp_write_registers: true
+          temp_step: 0.5
+          temperature_unit: C
+    sensors:
+
+        - name: EU08L_Hc1_Room_device_temperature
+          address: 5004
+          input_type: holding
+          unit_of_measurement: "°C"
+          state_class: total
+          scale: 0.1
+          precision: 1
+          data_type: int16
+
+        - name: EU08L_Hp1_Compressor_Power_Consumption_accumulated
+          address: 1020
+          input_type: holding
+          unit_of_measurement: "Wh"
+          state_class: total
+          scale: 1
+          precision: 0
+          data_type: int32   
+
+        - name: EU08L_Hp1_Operating_State
+          address: 1003
+          input_type: holding
+          unit_of_measurement: ""
+          state_class: total
+          scale: 1
+          precision: 0
+          data_type: uint16       

@@ -33,8 +33,32 @@
           target_temp_write_registers: true
           temp_step: 1
           temperature_unit: C
-    
+        - name: Room termometer
+          address: 5004
+          input_type: holding
+          #count: 1
+          data_type: int16
+          max_temp: 35
+          min_temp: 15
+          #offset: 0
+          precision: 1
+          scale: 0.1
+          #structure: ">f"
+          target_temp_register: 5004
+          target_temp_write_registers: true
+          temp_step: 0.5
+          temperature_unit: C
     sensors:
+
+        - name: EU08L_Hc1_Room_device_temperature
+          address: 5004
+          input_type: holding
+          unit_of_measurement: "°C"
+          state_class: total
+          scale: 0.1
+          precision: 1
+          data_type: int16
+          
         - name: EU08L_Hp_QP_heating
         ## aktuelle Leistung der WP (Abgabeleistung)
           address: 1011
@@ -462,14 +486,7 @@
           scale: 0.1
           precision: 1
           data_type: int16
-        - name: EU08L_Hc1_Room_device_temperature
-          address: 5004
-          input_type: holding
-          unit_of_measurement: "°C"
-          state_class: total
-          scale: 0.1
-          precision: 1
-          data_type: int16
+
         - name: EU08L_Hc1_Set_flow_line_temperature
           address: 5005
           input_type: holding

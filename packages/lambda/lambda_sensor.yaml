@@ -42,3 +42,27 @@ sensor:
           {% set count1 = states('counter.eu08l_heat_pump_cycling_start') | int(0) %}
           {% set count2 = states('counter.eu08l_heat_pump_cycling_diff') | int(0) %}
           {{ count1 + count2 }}
+
+
+input_number:
+  energy_hot_water_sum:
+    name: "energy_hot_water_sum"
+    step: 0.1
+    min: 0
+    max: 9999999
+    unit_of_measurement: "kWh"
+  energy_hot_water_start:
+    name: "energy_hot_water_start"
+    step: 0.1
+    min: 0
+    max: 9999999
+    initial: 0
+    unit_of_measurement: "kWh"
+  energy_hot_water_end:
+    name: "energy_hot_water_end"
+    step: 0.1
+    min: 0
+    max: 9999999
+    initial: 0
+    unit_of_measurement: "kWh"
+
