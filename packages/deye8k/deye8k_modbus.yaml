@@ -26,6 +26,38 @@ modbus:
 
 
     sensors:
+    
+#### test   #######
+    - name: "Deye Generator daily Energy"
+     ## daily Generator Energy"
+      address: 536
+      input_type: holding
+      data_type: uint16
+      unit_of_measurement: "kWh"
+      scale: 0.1
+      precision: 1
+      state_class: "total_increasing"
+      device_class: "energy"
+
+    - name: "Deye Generator Power low"  
+
+      address: 667
+      input_type: holding
+      data_type: uint16
+      unit_of_measurement: "W"
+      precision: 0
+      state_class: "measurement"
+      #scan_interval: 5
+
+    - name: "Deye Generator Power high"  
+
+      address: 671
+      input_type: holding
+      data_type: uint16
+      unit_of_measurement: "W"
+      state_class: "measurement"
+      #scan_interval: 5   
+
 ## PV Values##########################################################
     - name: "Deye PV1 Power"  
     ## Power String 1 (Gartenseite)

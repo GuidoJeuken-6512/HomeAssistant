@@ -65,4 +65,25 @@ input_number:
     max: 9999999
     initial: 0
     unit_of_measurement: "kWh"
+##### Heating Enery Consumption
+  energy_heating_sum:
+    name: "energy_heating_sum"
+    step: 0.1
+    min: 0
+    max: 9999999
+    unit_of_measurement: "kWh"
+  energy_heating_start:
+    name: "energy_heating_start"
+    step: 0.1
+    min: 0
+    max: 9999999
+    initial: 0
+    unit_of_measurement: "kWh"
+  energy_heating_end:
+    name: "energy_heating_end"
+    step: 0.1
+    min: 0
+    max: 9999999
+    initial: 0
+    unit_of_measurement: "kWh"
 
