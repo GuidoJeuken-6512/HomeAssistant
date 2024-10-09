@@ -155,7 +155,7 @@
           metadata: {}
           data:
             value: '{{states(''input_number.eu08l_energy_heating_sum'') | float(0) + (states(''input_number.eu08l_energy_heating_end'')
-              |float(0) - states(''input_number.eu08l_energy_hot_heating_start'') |float(0)
+              |float(0) - states(''input_number.eu08l_energy_heating_start'') |float(0)
               ) | float(0)}}'
           target:
             entity_id: input_number.eu08l_energy_heating_sum
