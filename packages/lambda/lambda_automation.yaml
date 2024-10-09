@@ -60,3 +60,104 @@
         - counter.eu08l_hot_water_cycling_daily
     mode: single
   
+  - id: '1728482010496'
+    alias: kWh HotWater
+    description: ''
+    triggers:
+    - trigger: state
+      entity_id:
+      - sensor.eu08l_hp1_operating_state
+      from: '2'
+      id: from2
+    - trigger: state
+      entity_id:
+      - sensor.eu08l_hp1_operating_state
+      id: to2
+      to: '2'
+    conditions: []
+    actions:
+    - choose:
+      - conditions:
+        - condition: trigger
+          id:
+          - to2
+        sequence:
+        - action: input_number.set_value
+          metadata: {}
+          data:
+            value: '{{states(''sensor.eu08l_hp1_compressor_power_consumption_accumulated'')
+              | float(0) /1000}}'
+          target:
+            entity_id: input_number.energy_hot_water_start
+      - conditions:
+        - condition: trigger
+          id:
+          - from2
+        sequence:
+        - action: input_number.set_value
+          metadata: {}
+          data:
+            value: '{{states(''sensor.eu08l_hp1_compressor_power_consumption_accumulated'')
+              | float(0) /1000}}'
+          target:
+            entity_id: input_number.energy_hot_water_end
+        - action: input_number.set_value
+          metadata: {}
+          data:
+            value: '{{states(''input_number.energy_hot_water_sum'') | float(0) + (states(''input_number.energy_hot_water_end'')
+              |float(0) - states(''input_number.energy_hot_water_start'') |float(0)
+              ) | float(0)}}'
+          target:
+            entity_id: input_number.energy_hot_water_sum
+    mode: single
+  - id: '1728483475534'
+    alias: Heating kWh
+    description: ''
+    triggers:
+    - trigger: state
+      entity_id:
+      - sensor.eu08l_hp1_operating_state
+      from: '1'
+      id: from2
+    - trigger: state
+      entity_id:
+      - sensor.eu08l_hp1_operating_state
+      id: to2
+      to: '1'
+    conditions: []
+    actions:
+    - choose:
+      - conditions:
+        - condition: trigger
+          id:
+          - to2
+        sequence:
+        - action: input_number.set_value
+          metadata: {}
+          data:
+            value: '{{states(''sensor.eu08l_hp1_compressor_power_consumption_accumulated'')
+              | float(0) /1000}}'
+          target:
+            entity_id: input_number.energy_heating_start
+      - conditions:
+        - condition: trigger
+          id:
+          - from2
+        sequence:
+        - action: input_number.set_value
+          metadata: {}
+          data:
+            value: '{{states(''sensor.eu08l_hp1_compressor_power_consumption_accumulated'')
+              | float(0) /1000}}'
+          target:
+            entity_id: input_number.energy_heating_end
+        - action: input_number.set_value
+          metadata: {}
+          data:
+            value: '{{states(''input_number.energy_heating_sum'') | float(0) + (states(''input_number.energy_heating_end'')
+              |float(0) - states(''input_number.energy_hot_heating_start'') |float(0)
+              ) | float(0)}}'
+          target:
+            entity_id: input_number.energy_heating_sum
+    mode: single
+  
