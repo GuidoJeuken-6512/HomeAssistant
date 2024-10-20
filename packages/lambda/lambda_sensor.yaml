@@ -44,6 +44,7 @@ sensor:
           {{ count1 + count2 }}
 
 
+
 input_number:
   eu08l_energy_hot_water_sum:
     name: "energy_hot_water_sum"

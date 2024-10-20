@@ -350,6 +350,7 @@
           precision: 1
           data_type: int16
         #- name: EU08L_Boil1_Set_temperature
+        ## durch climate entity ersetzt
         # address: 2050
           #input_type: holding
           #unit_of_measurement: "°C"
