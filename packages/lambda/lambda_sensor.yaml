@@ -88,3 +88,12 @@ input_number:
     initial: 0
     unit_of_measurement: "kWh"
 
+utility_meter:
+  ww_daily_kwh:
+    source: input_number.eu08l_energy_hot_water_sum
+    name: Hot Water Daily Energy
+    cycle: daily
+  heat_daily_kwh:
+    source: input_number.eu08l_energy_heating_sum
+    name: Heating Daily Energy
+    cycle: daily
