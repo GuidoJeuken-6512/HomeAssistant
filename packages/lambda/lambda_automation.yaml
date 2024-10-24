@@ -3,19 +3,19 @@
   ####### the initial values for the cycling must be taken once from the Lambda heat pump and entered into the sensor.
   - id: '1727726999508'
     alias: increment HP Timings
-    description: Tacktungen der WP hochzählen
-    trigger:
-    - platform: state 
-      entity_id:
-      - sensor.eu08l_hp1_operating_state
-      to: '1'
-      id: Heating
-    - platform: state
-      entity_id:
-      - sensor.eu08l_hp1_operating_state
-      to: '2'
-      id: HotWater
-    condition: []
+    description: Taktungen der WP hochzählen
+    triggers:
+      - entity_id:
+          - sensor.eu08l_hp1_operating_state
+        to: "1"
+        id: Heating
+        trigger: state
+      - entity_id:
+          - sensor.eu08l_hp1_operating_state
+        to: "2"
+        id: HotWater
+        trigger: state
+    conditions: []
     action:
     - choose:
       - conditions:
@@ -46,10 +46,10 @@
   - id: '1727727092095'
     alias: reset counter for daily HP timing
     description: Zähler für daily tacktung WP resetten
-    trigger:
-    - platform: time
-      at: 00:00:00
-    condition: []
+    triggers:
+      - at: "00:00:00"
+        trigger: time
+    conditions: []
     action:
     - action: counter.reset
       metadata: {}
