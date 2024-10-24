@@ -118,11 +118,11 @@
       entity_id:
       - sensor.eu08l_hp1_operating_state
       from: '1'
-      id: from2
+      id: from1
     - trigger: state
       entity_id:
       - sensor.eu08l_hp1_operating_state
-      id: to2
+      id: to1
       to: '1'
     conditions: []
     actions:
@@ -130,7 +130,7 @@
       - conditions:
         - condition: trigger
           id:
-          - to2
+          - to1
         sequence:
         - action: input_number.set_value
           metadata: {}
@@ -142,7 +142,7 @@
       - conditions:
         - condition: trigger
           id:
-          - from2
+          - from1
         sequence:
         - action: input_number.set_value
           metadata: {}
