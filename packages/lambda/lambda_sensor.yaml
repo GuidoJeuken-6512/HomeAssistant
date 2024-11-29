@@ -1,99 +1,98 @@
 counter:
 ## to monitor the heat pump's cycling, here are the sensors.
-## you have to take the initial values from the lambda
-  eu08l_heat_pump_cycling_start:
-    name: eu08l_heat_pump_cycling_start
-    initial: 56
-  eu08l_hot_water_cycling_start:
-    name: eu08l_hot_water_cycling_start
-    initial: 113
-## here are the counters for the daily cycling, 
-## they are increased via the automation when the Lambda sets the sensor “sensor.eu08l_hp1_operating_state” to 1 = heating or 2 = hot water
+  eu08l_heat_pump_cycling:
+    name: eu08l_heat_pump_cycling
+    initial: 46
+  eu08l_hot_water_cycling:
+    name: eu08l_hot_water_cycling
+    initial: 112                                                                                                                                               
   eu08l_heat_pump_cycling_daily:
     name: eu08l_heat_pump_cycling_daily
     initial: 0
-
   eu08l_hot_water_cycling_daily:
     name: eu8l_hot_water_cycling_daily
     initial: 0
-  ## here the counter for total cycling values. they will also be incresed as the daily cycling counter
-  eu08l_heat_pump_cycling_diff:
-    name: eu08l_heat_pump_cycling_diff
-    initial: 0
+    
 
-  eu08l_hot_water_cycling_diff:
-    name: eu8l_hot_water_cycling_diff
-    initial: 0
-# In order to show total cycling values in the dashboard and to persist them in the DB, we have to add the cycling_start & cycleing_diff Values 
+
 sensor:
   - platform: template
     sensors:
-      eu08l_hot_water_cycling:
-        friendly_name: "eu08l_hot_water_cycling"
+      eu08l_cop_calc:
+        friendly_name: "eu08l_cop_calc"
         value_template: >
-          {% set count1 = states('counter.eu08l_hot_water_cycling_start') | int(0) %}
-          {% set count2 = states('counter.eu8l_hot_water_cycling_diff') | int(0) %}
-          {{ count1 + count2 }}
+          {{ (states('sensor.eu08l_hp1_compressor_thermal_energy_output_accumulated') | float(0) /
+              states('sensor.eu08l_hp1_compressor_power_consumption_accumulated') | float(0)) | round(2) }}
+
   - platform: template
     sensors:
-      eu08l_heat_pump_cycling:
-        friendly_name: "eu08l_heat_pump_cycling"
+      eu08l_total_power_consumption_lambda:
+        friendly_name: "eu08l total power consumption Lambda"
+        unit_of_measurement: "W"
         value_template: >
-          {% set count1 = states('counter.eu08l_heat_pump_cycling_start') | int(0) %}
-          {% set count2 = states('counter.eu08l_heat_pump_cycling_diff') | int(0) %}
-          {{ count1 + count2 }}
+          {{ (states('sensor.shelly3emlambda_channel_a_power') | float +
+              states('sensor.shelly3emlambda_channel_b_power') | float +
+              states('sensor.shelly3emlambda_channel_c_power') | float) * -1 }}
+        availability_template: >
+          {{ states('sensor.shelly3emlambda_channel_a_power') | is_number and
+             states('sensor.shelly3emlambda_channel_b_power') | is_number and
+             states('sensor.shelly3emlambda_channel_c_power') | is_number }}
+
+
+  #### boiler energy loss calculation ### not perfect :-(
+  - platform: statistics
+    name: eu08l_boil1_max_temperature
+    state_characteristic: value_max
+    entity_id: sensor.eu08l_boil1_actual_high_temperature
+    max_age:
+      hours: 24
+  - platform: statistics
+    name: eu08l_boil1_min_temperature
+    state_characteristic: value_min
+    entity_id: sensor.eu08l_boil1_actual_high_temperature
+    max_age:
+      hours: 24
+  
+  - platform: template
+    sensors:
+      eu08l_boil1_min_temp_time:
+        friendly_name: "Zeit der niedristen Temperatur im WW Speicher"
+        value_template: >
+          {% set max_temp = states('sensor.eu08l_boil1_min_temperature') %}
+          {% for state in states.sensor %}
+            {% if state.state == max_temp %}
+              {{ as_timestamp(state.last_changed) | timestamp_custom('%Y-%m-%d %H:%M:%S', True) }}
+            {% endif %}
+          {% endfor %}
+  - platform: template
+    sensors:
+      eu08l_boil1_max_temp_time:
+        friendly_name: "Zeit der höchsten Temperatur im WW Speicher"
+        value_template: >
+          {% set max_temp = states('sensor.eu08l_boil1_max_temperature') %}
+          {% for state in states.sensor %}
+            {% if state.state == max_temp %}
+              {{ as_timestamp(state.last_updated) | timestamp_custom('%Y-%m-%d %H:%M:%S', True) }}
+            {% endif %}
+          {% endfor %}
+  - platform: template
+    sensors:
+      eu08l_boil1_heat_loss_hour:
+        friendly_name: "Wärmeverlust im WW Speicher"
+        unit_of_measurement: '°C/h'
+        value_template: >
+          {% set now = now() %}
+            {% set sixteen_today = now.replace(hour=16, minute=30, second=0) %}
+            {% set sixteen_yesterday = sixteen_today - timedelta(days=1) %}
+            {% if now < sixteen_today %}
+              {% set diff = now - sixteen_yesterday %}
+            {% else %}
+              {% set diff = now - sixteen_today %}
+            {% endif %}
+            {{ (((states['sensor.EU08L_Boil1_max_temperature'].state) | float() - (states['sensor.EU08L_Boil1_Actual_high_temperature'].state) | float()) / diff.total_seconds() *3600) |round(2) }}
+  ##### daily Energy heating & hot water
+  
 
 
 
-input_number:
-  eu08l_energy_hot_water_sum:
-    name: "energy_hot_water_sum"
-    step: 0.1
-    min: 0
-    max: 9999999
-    unit_of_measurement: "kWh"
-  eu08l_energy_hot_water_start:
-    name: "energy_hot_water_start"
-    step: 0.1
-    min: 0
-    max: 9999999
-    initial: 0
-    unit_of_measurement: "kWh"
-  eu08l_energy_hot_water_end:
-    name: "energy_hot_water_end"
-    step: 0.1
-    min: 0
-    max: 9999999
-    initial: 0
-    unit_of_measurement: "kWh"
-##### Heating Enery Consumption
-  eu08l_energy_heating_sum:
-    name: "energy_heating_sum"
-    step: 0.1
-    min: 0
-    max: 9999999
-    unit_of_measurement: "kWh"
-  eu08l_energy_heating_start:
-    name: "energy_heating_start"
-    step: 0.1
-    min: 0
-    max: 9999999
-    initial: 0
-    unit_of_measurement: "kWh"
-  eu08l_energy_heating_end:
-    name: "energy_heating_end"
-    step: 0.1
-    min: 0
-    max: 9999999
-    initial: 0
-    unit_of_measurement: "kWh"
 
-utility_meter:
-  ww_daily_kwh:
-    source: input_number.eu08l_energy_hot_water_sum
-    name: Hot Water Daily Energy
-    cycle: daily
-  heat_daily_kwh:
-    source: input_number.eu08l_energy_heating_sum
-    name: Heating Daily Energy
-    cycle: daily

@@ -10,62 +10,82 @@ input_number:
     max: 99999
     step: 0.01
     
-        
+    
+    
 #### Sensoren   ################################
+#### sensors with deye..... belonges to the inverter
+####### with PV.... are independent sensors like sum deye+BKW#####
 sensor:
+  - platform: statistics
+    name: "mWR max power hinten"
+    entity_id: sensor.opendtu_69891c_ac_power
+    state_characteristic: value_max
+    max_age:
+      days: 3650  # 10 Jahre
+      
   - platform: template
     sensors:
       zaehlerstand:
         friendly_name: "Zählerstand berechnet"
         unit_of_measurement: "kWh"
-        value_template: "{{ (states('input_number.zaehlerstand') | float(0) + states('sensor.deye_total_energy_import') | float(0) -  states('sensor.deye_total_energy_export') | float(0))| round(2) }}"
+        value_template: "{{ (states('input_number.zaehlerstand') | float + states('sensor.deye8k_total_energy_import') | float(0) -  states('sensor.deye8k_total_energy_export') | float(0))| round(2) }}"
 #### PV Power berechnet ######
 ## PV1 + PV2 + BKW
   - platform: template
     sensors:
       pv_power_sum_calc:
         friendly_name: "PV Power berechnet (beide Strings + BWK)"
-        ## bkw fehlt noch
         unit_of_measurement: "W"
-        value_template: "{{ (states('sensor.deye_pv1_power') | float(0) + states('sensor.deye_pv2_power') | float(0) )| round(2) }}"
-#### max and daily max power sensors
-##### PV1#####
-  -   platform: statistics
-      name: "PV1 Power Max"
-      entity_id: sensor.deye_pv1_power
-      state_characteristic: value_max
-      max_age:
-        days: 9999
-  -   platform: statistics
-      name: "PV1 Power daily Max"
-      entity_id: sensor.deye_pv1_power
-      state_characteristic: value_max
-      max_age:
-        hours: 24
-###### PV2 
-  -   platform: statistics
-      name: "PV2 Power Max"
-      entity_id: sensor.deye_pv2_power
-      state_characteristic: value_max
-      max_age:
-        days: 9999
-  -   platform: statistics
-      name: "PV2 Power daily Max"
-      entity_id: sensor.deye_pv2_power
-      state_characteristic: value_max
-      max_age:
-        hours: 24
+        value_template: "{{ (states('sensor.deye8k_pv1_power') | float(0) + states('sensor.deye8k_pv2_power') | float(0) )| round(2) }}"
+### max values PV power
+  - platform: statistics
+    name: "PV max power hinten"
+    entity_id: sensor.deye8k_pv1_power
+    state_characteristic: value_max
+    max_age:
+      days: 3650  # 10 Jahre
+  - platform: statistics
+    name: "PV max power vorn"
+    entity_id: sensor.deye8k_pv2_power
+    state_characteristic: value_max
+    max_age:
+      days: 3650  # 10 Jahre
+  - platform: statistics
+    name: "PV max power"
+    entity_id: sensor.pv_power_sum_calc
+    state_characteristic: value_max
+    max_age:
+      days: 3650  # 10 Jahre
+      ###### dailies ##############################
+  - platform: statistics
+    name: "PV daily max power hinten"
+    entity_id: sensor.deye8k_pv1_power
+    state_characteristic: value_max
+    max_age:
+      days: 1  
+  - platform: statistics
+    name: "PV daily max power vorn"
+    entity_id: sensor.deye8k_pv2_power
+    state_characteristic: value_max
+    max_age:
+      days: 1  
+  - platform: statistics
+    name: "PV daily max power"
+    entity_id: sensor.pv_power_sum_calc
+    state_characteristic: value_max
+    max_age:
+      days: 1  
 
-### pv_power_sum_calc
-  -   platform: statistics
-      name: "PV total Power Max"
-      entity_id: sensor.pv_power_sum_calc
-      state_characteristic: value_max
-      max_age:
-        days: 9999
-  -   platform: statistics
-      name: "PV total Power daily Max"
-      entity_id: sensor.pv_power_sum_calc
-      state_characteristic: value_max
-      max_age:
-        hours: 24
+utility_meter:
+  pv1_power_daily:
+    source: sensor.deye8k_pv1_power
+    name: pv1_power_daily
+    cycle: daily
+  pv2_power_daily:
+    source: sensor.deye8k_pv2_power
+    name: pv2_power_daily
+    cycle: daily    
+  pv_sum_power_daily:
+    source: sensor.pv_power_sum_calc
+    name: pv2_sum_power_daily
+    cycle: daily

@@ -33,18 +33,14 @@
           target_temp_write_registers: true
           temp_step: 1
           temperature_unit: C
-        - name: Room termometer
-          address: 5004
-          input_type: holding
-          #count: 1
-          data_type: int16
+        - name: EU08L_Hc1_Set_heating_mode_room_temperature
+          target_temp_register: 5051
+          address: 2050
           max_temp: 35
           min_temp: 15
           #offset: 0
           precision: 1
           scale: 0.1
-          #structure: ">f"
-          target_temp_register: 5004
           target_temp_write_registers: true
           temp_step: 0.5
           temperature_unit: C
@@ -151,6 +147,29 @@
           precision: 0
           data_type: int16
   # Heat Pump No. 1 --for additonal heatpumps, this section needs to be duplicated and second digit of address increased by 1--
+##new HeatPump sensors start ###
+######## Accumulated electrical energy consumption of compressor unit since last statistic reset
+        - name: EU08L_HP1_accumulated_electr_energy_since_restart
+          address: 1020
+          input_type: holding
+          data_type: uint32
+          unit_of_measurement: "Wh"
+          scale: 1
+          precision: 1
+          state_class: "total_increasing"
+          device_class: "energy"
+          slave_count: 2  
+        - name: EU08L_HP1_accumulated_termal_energy_since_restart
+          address: 1022
+          input_type: holding
+          data_type: uint32
+          unit_of_measurement: "Wh"
+          scale: 1
+          precision: 1
+          state_class: "total_increasing"
+          device_class: "energy"
+          slave_count: 2 
+##### ende of new HeatPump sensors          
         - name: EU08L_Hp1_Error_State
           address: 1000
           input_type: holding
@@ -390,6 +409,61 @@
   #        scale: 0.1
   #        precision: 1
   #        data_type: int16
+  #### new buffer sensors start ######################
+  ##### Actual temperature of buffer set via modbus (min = 0°C; max = 90°C) (R/W)
+        - name: EU08L_Buff1_Actual_set_temperature
+          address: 3004
+          input_type: holding
+          unit_of_measurement: "°C"
+          state_class: total
+          scale: 0.1
+          precision: 1
+          data_type: int16 
+        - name: EU08L_Buffer_Request_Type
+          address: 3005
+          input_type: holding
+          unit_of_measurement: ""
+          state_class: total
+          scale: 1
+          precision: 0
+          data_type: uint16
+####Requested flow line temperature. (min = 0.0°C, max = 65.0°C) -> Valid value is reuqired! (R/W)          
+        - name: EU08L_Buff1_requested_flow_line_temperature
+          address: 3006
+          input_type: holding
+          unit_of_measurement: "°C"
+          state_class: total
+          scale: 0.1
+          precision: 1
+          data_type: int16  
+######Requested return line temperature. (min = 0.0°C, max = 60.0°C) -> Valid value is reuqired!          
+        - name: EU08L_Buff1_requested_return_line_temperature
+          address: 3007
+          input_type: holding
+          unit_of_measurement: "°C"
+          state_class: total
+          scale: 0.1
+          precision: 1
+          data_type: int16 
+####Requested temperature difference between flow line and return line. (min = 0.0K, max = 35.0K)  -> Valid value is reuqired! (R/W)          
+        - name: EU08L_Buff1_requested_dT
+          address: 3008
+          input_type: holding
+          unit_of_measurement: "°K"
+          state_class: total
+          scale: 0.1
+          precision: 1
+          data_type: int16 
+###Requested capacity (min = 0.0kW, max = 25,5kW)  -> Value is optional.    (R/W)      
+        - name: EU08L_Buff1_requested_capacity
+          address: 3009
+          input_type: holding
+          unit_of_measurement: "kW"
+          state_class: total
+          scale: 0.1
+          precision: 1
+          data_type: int16                                        
+  #### end new buffer sensors#####################
   #      - name: EU08L_Buff1_Set_temperature
   #        address: 3050
   #        input_type: holding

@@ -1,0 +1,43 @@
+  ##### ab hier Shelly 3 Konfigurartaion von https://iamklaus.org/de/home-assistant-config-generator/  
+utility_meter:
+  energy_import_daily:
+    source: sensor.energy_import_sum
+    name: Energy Import Daily
+    cycle: daily
+  energy_import_monthly:
+    source: sensor.energy_import_sum
+    name: Energy Import Monthly
+    cycle: monthly
+  energy_export_daily:
+    source: sensor.energy_export_sum
+    name: Energy Export Daily
+    cycle: daily
+  energy_export_monthly:
+    source: sensor.energy_export_sum
+    name: Energy Export Monthly
+    cycle: monthly
+  energy_consumption_daily:
+    source: sensor.energy_consumption_sum
+    name: Energy Consumption Daily
+    cycle: daily
+  energy_consumption_monthly:
+    source: sensor.energy_consumption_sum
+    name: Energy Consumption Monthly
+    cycle: monthly
+  bkw_production_daily:
+    source: sensor.shellypmminig3_84fce636d384_energy
+    name: bkw daily production
+    cycle: daily
+  bkw_production_monthly:
+    source: sensor.shellypmminig3_84fce636d384_energy
+    name: bkw monthly production
+    cycle: monthly
+  lambda_consumtion_daily:
+    source: sensor.shelly_lambda_gesamt_leistung
+    name: Lambda daily consumtion
+    cycle: daily
+  lambda_consumtion_monthly:
+    source: sensor.shelly_lambda_gesamt_leistung
+    name: Lambda monthly consumtion
+    cycle: monthly
+

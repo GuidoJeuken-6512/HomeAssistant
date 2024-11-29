@@ -1,3 +1,7 @@
+
+### I've switched to solarman integration from https://github.com/davidrapan/ha-solarman
+
+
 # modbus config for a deye inverter 3P 8k sun-8k-sg04lp3-eu
 # just change name/host/ port to get values of your inverter
 # in the moment my deye inverter has no slave ID configured, if your have, add slave: n to each sensor.
