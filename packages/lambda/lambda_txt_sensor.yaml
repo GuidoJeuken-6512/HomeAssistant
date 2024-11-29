@@ -41,6 +41,7 @@ sensor:
         friendly_name: "eu08l_Hc1_Operating_Mode_txt"
         value_template: >
           {{ ['Off', 'Manual', 'Automatik', 'Auto-Heating', 'Auto-Cooling', 'Frost', 'Summer', 'Floor-dry'][states('sensor.eu08l_hc1_operating_mode')|int(0)] }}
+####### new txt sensor
       eu08l_buff1_request_type_txt:
         friendly_name: "eu08l_buffer_request_type"
         value_template: >
