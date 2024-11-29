@@ -150,7 +150,7 @@
 
 ##new HeatPump sensors start ###
 ######## Accumulated electrical energy consumption of compressor unit since last statistic reset
-        - name: EU08L_HP1_accumulated_electr_energy_since_restart
+        - name: EU08L_HP1_accumulated_electr_energy_since_reset
           address: 1020
           input_type: holding
           data_type: uint32
@@ -160,7 +160,7 @@
           state_class: "total_increasing"
           device_class: "energy"
           slave_count: 2  
-        - name: EU08L_HP1_accumulated_termal_energy_since_restart
+        - name: EU08L_HP1_accumulated_termal_energy_since_reset
           address: 1022
           input_type: holding
           data_type: uint32
