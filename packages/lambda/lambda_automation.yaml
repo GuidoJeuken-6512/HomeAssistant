@@ -77,3 +77,59 @@
         - '{{ (float(states(''sensor.thermometer_wohnzimmer_temperature'')) *10 ) |round(0)  }}'
       action: modbus.write_register
     mode: single
+
+  
+  - id: e126b5f600a14eb0a31023668e251a08
+    alias: Verbrauch nach Betriebsmodus akkumulieren
+    description: ''
+    triggers:
+    - trigger: time_pattern
+      seconds: /10
+      enabled: false
+    conditions: []
+    actions:
+    - choose:
+      - conditions:
+        - condition: state
+          entity_id: sensor.eu08l_hp1_operating_state
+          state: '1'
+        sequence:
+        - target:
+            entity_id: input_number.eu08l_energy_heating_sum
+          data:
+            value: '{{ states(''input_number.eu08l_energy_heating_sum'') | float(0)
+              + ((states(''sensor.eu08l_hp1_compressor_power_consumption_accumulated'')
+              | float(0) / 1000) - states(''input_number.eu08l_last_consumption'') |
+              float(0)) }}'
+          action: input_number.set_value
+      - conditions:
+        - condition: state
+          entity_id: sensor.eu08l_hp1_operating_state
+          state: '2'
+        sequence:
+        - target:
+            entity_id: input_number.eu08l_energy_hot_water_sum
+          data:
+            value: '{{ states(''input_number.eu08l_energy_hot_water_sum'') | float(0)
+              + ((states(''sensor.eu08l_hp1_compressor_power_consumption_accumulated'')
+              | float(0) / 1000)  - states(''input_number.eu08l_last_consumption'')
+              | float(0)) }}'
+          action: input_number.set_value
+      default:
+      - target:
+          entity_id: input_number.eu08l_energy_rest_sum
+        data:
+          value: '{{ states(''input_number.eu08l_energy_rest_sum'') | float(0) + ((states(''sensor.eu08l_hp1_compressor_power_consumption_accumulated'')
+            | float(0) / 1000)  - states(''input_number.eu08l_last_consumption'') |
+            float(0)) }}'
+        action: input_number.set_value
+    - action: input_number.set_value
+      metadata: {}
+      data:
+        value: "{% if states('sensor.eu08l_hp1_compressor_power_consumption_accumulated')
+          | float(0) > 0 %}\n  {{ states('sensor.eu08l_hp1_compressor_power_consumption_accumulated')
+          | float(0) / 1000 }}\n{% else %}\n  {{ states('input_number.eu08l_last_consumption')
+          | float(0)}}\n{% endif %}"
+      target:
+        entity_id: input_number.eu08l_last_consumption
+    mode: single

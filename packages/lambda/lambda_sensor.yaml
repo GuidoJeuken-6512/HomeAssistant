@@ -12,7 +12,28 @@ counter:
   eu08l_hot_water_cycling_daily:
     name: eu8l_hot_water_cycling_daily
     initial: 0
-    
+     
+
+#### neue Berechnung Energieverbrauch Lambda nach Art 
+input_number:
+  eu08l_last_consumption:
+    name: "eu08l_last_power_consumption"
+    min: 0
+    max: 10000000000000
+    step: 0.001
+    unit_of_measurement: "kWh"
+  eu08l_energy_heating_sum:
+    name: "eu08l_energy_heating_sum"
+    min: 0.001
+    max: 10000000000000
+    step: 1
+    unit_of_measurement: "kWh"
+  eu08l_energy_hot_water_sum:
+    name: "eu08l_energy_hot_water_sum"
+    min: 0
+    max: 10000000000000
+    step: 0.001
+    unit_of_measurement: "kWh"
 
 
 sensor:
@@ -91,7 +112,22 @@ sensor:
             {% endif %}
             {{ (((states['sensor.EU08L_Boil1_max_temperature'].state) | float() - (states['sensor.EU08L_Boil1_Actual_high_temperature'].state) | float()) / diff.total_seconds() *3600) |round(2) }}
   ##### daily Energy heating & hot water
-  
+
+utility_meter:
+  eu08l_energy_heating_daily:
+    source: input_number.eu08l_energy_heating_sum
+    cycle: daily
+  eu08l_energy_heating_monthly:
+    source: input_number.eu08l_energy_heating_sum
+    cycle: monthly
+
+  eu08l_energy_hot_water_daily:
+    source: input_number.eu08l_energy_hot_water_sum
+    cycle: daily
+  eu08l_energy_hot_water_monthly:
+    source: input_number.eu08l_energy_hot_water_sum
+    cycle: monthly
+
 
 
 

@@ -156,7 +156,7 @@
           data_type: uint32
           unit_of_measurement: "Wh"
           scale: 1
-          precision: 1
+          precision: 0
           state_class: "total_increasing"
           device_class: "energy"
           slave_count: 2  
@@ -166,7 +166,7 @@
           data_type: uint32
           unit_of_measurement: "Wh"
           scale: 1
-          precision: 1
+          precision: 0
           state_class: "total_increasing"
           device_class: "energy"
           slave_count: 2 
@@ -685,3 +685,16 @@
   #        precision: 1
   #        data_type: int16
   
+        # - name: EU08L_HP1_IP
+        #   address: 0251
+        #   input_type: holding
+        #   data_type: uint32
+        #   slave_count: 2 
+        # - name: EU08L_HP1_IP_low
+        #   address: 0251
+        #   input_type: holding
+        #   data_type: uint16
+        # - name: EU08L_HP1_IP_high
+        #   address: 0252
+        #   input_type: holding
+        #   data_type: uint16      

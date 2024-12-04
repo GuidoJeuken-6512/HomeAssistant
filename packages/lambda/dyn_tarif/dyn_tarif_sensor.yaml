@@ -1,0 +1,148 @@
+input_number:
+  eu08l_last_consumption:
+    name: "eu08l_last_power_consumption"
+    min: 0
+    max: 10000000000000
+    step: 0.001
+    unit_of_measurement: "kWh"
+  eu08l_energy_heating_sum:
+    name: "eu08l_energy_heating_sum"
+    min: 0.001
+    max: 10000000000000
+    step: 1
+    unit_of_measurement: "kWh"
+  eu08l_energy_hot_water_sum:
+    name: "eu08l_energy_hot_water_sum"
+    min: 0
+    max: 10000000000000
+    step: 0.001
+    unit_of_measurement: "kWh"
+  eu08l_energy_rest_sum:
+    name: "eu08l_energy_rest_sum"
+    min: 0
+    max: 10000000000000
+    step: 0.001
+    unit_of_measurement: "kWh"
+    #### ab hier berechnung dynamische Tarif Kosten
+  deye8k_total_load_consumption_last_state:
+    min: 0
+    max: 10000000000000
+    step: 0.001
+    unit_of_measurement: "kWh"
+  dyn_energy_consumption_high:
+    min: 0
+    max: 10000000000000
+    step: 0.001
+    unit_of_measurement: "kWh"        
+  dyn_energy_consumption_midi:
+    min: 0
+    max: 10000000000000
+    step: 0.001
+    unit_of_measurement: "kWh"
+  dyn_energy_consumption_low:
+    min: 0
+    max: 10000000000000
+    step: 0.001
+    unit_of_measurement: "kWh"
+  low_price:
+    name: niedriger Preis
+    min: 0
+    max: 10000
+    step: 0.0001
+    unit_of_measurement: '€'
+  midi_price:
+    name: mittlerer Preis
+    min: 0
+    max: 10000
+    step: 0.0001
+    unit_of_measurement: '€'
+  high_price:
+    name: Hoher Preis
+    min: 0
+    max: 10000
+    step: 0.0001
+    unit_of_measurement: '€'
+  octopus_price:
+    name: octopus Preis
+    min: 0
+    max: 10000
+    step: 0.01
+    unit_of_measurement: '€'
+  my_price:
+    name: mein Preis
+    min: 0
+    max: 10000
+    step: 0.01
+    unit_of_measurement: '€'
+  naturstrom_price:
+    name: naturstrom Preis
+    min: 0
+    max: 10000
+    step: 0.01
+    unit_of_measurement: '€'
+  deye8k_total_energy_import_last_state:
+    name: deye8k_total_energy_import_last_state
+    min: 0
+    max: 10000
+    step: 0.01
+    unit_of_measurement: '€'    
+utility_meter:
+  eu08l_energy_heating_daily:
+    source: input_number.eu08l_energy_heating_sum
+    cycle: daily
+  eu08l_energy_heating_monthly:
+    source: input_number.eu08l_energy_heating_sum
+    cycle: monthly
+
+  eu08l_energy_hot_water_daily:
+    source: input_number.eu08l_energy_hot_water_sum
+    cycle: daily
+  eu08l_energy_hot_water_monthly:
+    source: input_number.eu08l_energy_hot_water_sum
+    cycle: monthly
+
+  eu08l_energy_rest_daily:
+    source: input_number.eu08l_energy_rest_sum
+    cycle: daily
+  eu08l_energy_rest_monthly:
+    source: input_number.eu08l_energy_rest_sum
+    cycle: monthly
+
+  my_price_daily:
+    source: input_number.my_price
+    cycle: daily
+  my_price_monthly:
+    source: input_number.my_price
+    cycle: monthly
+  octopus_price_daily:
+    source: input_number.octopus_price
+    cycle: daily
+  octopus_price_monthly:
+    source: input_number.octopus_price
+    cycle: monthly
+  naturstrom_price_daily:
+    source: input_number.naturstrom_price
+    cycle: daily
+  naturstrom_price_monthly:
+    source: input_number.naturstrom_price
+    cycle: monthly    
+
+### laut stromzähler 
+  total_energy_cost_daily:
+    source: sensor.total_energy_cost
+    cycle: daily
+  total_energy_cost_monthly:
+    source: sensor.total_energy_cost
+    cycle: monthly   
+
+sensor:
+  - platform: template
+    sensors:
+      total_energy_cost:
+        friendly_name: "Total Energy Cost"
+        unit_of_measurement: "€"
+        value_template: >
+          {% set price_per_kwh = 0.3779 %}
+          {% set total_energy = states('sensor.bitshake_smartmeterreader_ebz_e_inop') | float(0) %}
+          {{ (total_energy * price_per_kwh) | round(2) }}
+    

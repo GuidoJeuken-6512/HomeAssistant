@@ -1,0 +1,159 @@
+automation:
+
+  - id: '1731755864503'
+    alias: Verbrauch nach Zeit akkumulieren
+    description: ''
+    triggers:
+    - trigger: time_pattern
+      seconds: /10
+      enabled: false
+    conditions:
+    - condition:
+      - condition: template
+        value_template: '{{ states(''sensor.deye8k_total_load_consumption'')
+          | float > 0 }}
+  
+          '
+    actions:
+    - variables:
+        high_price: 0.3744
+        midi_price: 0.3244
+        low_price: 0.2544
+        my_price: 0.3779
+        naturstrom_price: 0.3199
+    - choose:
+      - conditions:
+        - condition: time
+          after: 02:00:00
+          before: 06:00:00
+        sequence:
+        - target:
+            entity_id: input_number.dyn_energy_consumption_low
+          data:
+            value: '{{ states(''input_number.dyn_energy_consumption_low'') | float(0)
+              + ((states(''sensor.deye8k_total_load_consumption'') | float(0) ) -
+              states(''input_number.deye8k_total_load_consumption_last_state'') |
+              float(0)) }}'
+          action: input_number.set_value
+      - conditions:
+        - condition: time
+          after: 06:00:00
+          before: '12:00:00'
+        sequence:
+        - target:
+            entity_id: input_number.dyn_energy_consumption_midi
+          data:
+            value: '{{ states(''input_number.dyn_energy_consumption_midi'') | float(0)
+              + ((states(''sensor.deye8k_total_load_consumption'') | float(0) ) -
+              states(''input_number.deye8k_total_load_consumption_last_state'') |
+              float(0)) }}'
+          action: input_number.set_value
+      - conditions:
+        - condition: time
+          after: '12:00:00'
+          before: '16:00:00'
+        sequence:
+        - target:
+            entity_id: input_number.dyn_energy_consumption_low
+          data:
+            value: '{{ states(''input_number.dyn_energy_consumption_low'') | float(0)
+              + ((states(''sensor.deye8k_total_load_consumption'') | float(0) ) -
+              states(''input_number.deye8k_total_load_consumption_last_state'') |
+              float(0)) }}'
+          action: input_number.set_value
+      - conditions:
+        - condition: time
+          after: '16:00:00'
+          before: '18:00:00'
+        sequence:
+        - target:
+            entity_id: input_number.dyn_energy_consumption_midi
+          data:
+            value: '{{ states(''input_number.dyn_energy_consumption_midi'') | float(0)
+              + ((states(''sensor.deye8k_total_load_consumption'') | float(0) ) -
+              states(''input_number.deye8k_total_load_consumption_last_state'') |
+              float(0)) }}'
+          action: input_number.set_value
+      - conditions:
+        - condition: time
+          after: '18:00:00'
+          before: '21:00:00'
+        sequence:
+        - target:
+            entity_id: input_number.dyn_energy_consumption_high
+          data:
+            value: '{{ states(''input_number.dyn_energy_consumption_high'') | float(0)
+              + ((states(''sensor.deye8k_total_load_consumption'') | float(0) ) -
+              states(''input_number.deye8k_total_load_consumption_last_state'') |
+              float(0)) }}'
+          action: input_number.set_value
+      - conditions:
+        - condition: time
+          after: '21:00:00'
+          before: 02:00:00
+        sequence:
+        - target:
+            entity_id: input_number.dyn_energy_consumption_midi
+          data:
+            value: '{{ states(''input_number.dyn_energy_consumption_midi'') | float(0)
+              + ((states(''sensor.deye8k_total_load_consumption'') | float(0) ) -
+              states(''input_number.deye8k_total_load_consumption_last_state'') |
+              float(0)) }}'
+          action: input_number.set_value
+    - action: input_number.set_value
+      metadata: {}
+      data:
+        value: "{% if states('sensor.deye8k_total_load_consumption') | float(0) >
+          0 %}\n  {{ states('sensor.deye8k_total_load_consumption') | float(0)  }}\n{%
+          else %}\n  {{ states('input_number.deye8k_total_load_consumption_last_state')
+          | float(0)}}\n{% endif %}"
+      target:
+        entity_id: input_number.deye8k_total_load_consumption_last_state
+      enabled: true
+    - target:
+        entity_id: input_number.high_price
+      data:
+        value: "{% if states('input_number.dyn_energy_consumption_high') not in ['unknown',
+          'unavailable'] %}\n  {{ states('input_number.dyn_energy_consumption_high')
+          | float(0) * high_price }}\n{% else %}\n  0\n{% endif %}"
+      action: input_number.set_value
+    - target:
+        entity_id: input_number.low_price
+      data:
+        value: "{% if states('input_number.dyn_energy_consumption_low') not in ['unknown',
+          'unavailable'] %}\n  {{ states('input_number.dyn_energy_consumption_low')
+          | float(0) * low_price }}\n{% else %}\n  0\n{% endif %}"
+      action: input_number.set_value
+    - target:
+        entity_id: input_number.midi_price
+      data:
+        value: "{% if states('input_number.dyn_energy_consumption_midi') not in ['unknown',
+          'unavailable'] %}\n  {{ (states('input_number.dyn_energy_consumption_midi')
+          | float(0) * midi_price)  }}\n{% else %}\n  0\n{% endif %}"
+      action: input_number.set_value
+    - target:
+        entity_id: input_number.octopus_price
+      data:
+        value: '{{ (states(''input_number.low_price'') | float(0) + states(''input_number.midi_price'')
+          | float(0) + states(''input_number.high_price'') | float(0)) | round(2) }}'
+      action: input_number.set_value
+    - target:
+        entity_id: input_number.my_price
+      data:
+        value: '
+  
+          {{ ((states(''input_number.dyn_energy_consumption_low'') | float(0) + states(''input_number.dyn_energy_consumption_midi'')
+          | float(0) + states(''input_number.dyn_energy_consumption_high'') | float(0))
+          *  my_price) | round(2)}}'
+      action: input_number.set_value
+    - target:
+        entity_id: input_number.naturstrom_price
+      data:
+        value: '
+  
+          {{ ((states(''input_number.dyn_energy_consumption_low'') | float(0) + states(''input_number.dyn_energy_consumption_midi'')
+          | float(0) + states(''input_number.dyn_energy_consumption_high'') | float(0))
+          *  naturstrom_price) | round(2)}}'
+      action: input_number.set_value      
+    mode: single
+  
