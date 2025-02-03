@@ -33,11 +33,21 @@ blueprint:
           multiple: true
     delay_time:
       name: Delay Time
-      description: The delay time between actions (in the format HH:MM:SS).
-      default: "00:05:00"
+      description: The delay time between actions (in the format HH:MM:SS) for non-FRITZ! thermostats.
+      default: "00:01:00"
       selector:
         text:
           type: text
+    fritz_delay_time:
+      name: FRITZ! Delay Time
+      description: > 
+        The delay time between actions (in the format HH:MM:SS) for FRITZ! thermostats.
+        FRITZ! thermostats need at least 15 minutes to update the values.
+      default: "00:16:00"
+      selector:
+        text:
+          type: text
+
 trigger:
   - platform: time
     at: !input time
@@ -49,6 +59,8 @@ action:
       thermostats: >
         {{ states.climate | map(attribute='entity_id') | list }}
       exclude_thermostats: !input exclude_thermostats
+      delay_time: !input delay_time
+      fritz_delay_time: !input fritz_delay_time
   - variables:
       original_temperatures: >
         {% set temps = namespace(value=[]) %}
@@ -67,27 +79,26 @@ action:
             max_temp: "{{ state_attr(repeat.item, 'max_temp') }}"
             min_temp: "{{ state_attr(repeat.item, 'min_temp') }}"
             curr_temp: "{{ state_attr(repeat.item, 'temperature') }}"
-        - service: notify.notify
-          data:
-            message: >
-              Thermostat: {{ repeat.item }}
-              Max Temp: {{ max_temp }}
-              Min Temp: {{ min_temp }}
-              Current Temp: {{ curr_temp }}
+            current_delay_time: >
+              {% if state_attr(repeat.item, 'min_temp') == 8 and state_attr(repeat.item, 'max_temp') == 28 %}
+                {{ fritz_delay_time }}
+              {% else %}
+                {{ delay_time }}
+              {% endif %}
         - service: climate.set_temperature
           target:
             entity_id: "{{ repeat.item }}"
           data:
             temperature: "{{ max_temp }}"
           continue_on_error: true
-        - delay: !input delay_time
+        - delay: "{{ current_delay_time }}"
         - service: climate.set_temperature
           target:
             entity_id: "{{ repeat.item }}"
           data:
             temperature: "{{ min_temp }}"
           continue_on_error: true
-        - delay: !input delay_time
+        - delay: "{{ current_delay_time }}"
         - service: climate.set_temperature
           target:
             entity_id: "{{ repeat.item }}"
@@ -101,5 +112,5 @@ action:
                 {{ curr_temp }}
               {% endif %}
           continue_on_error: true
-        - delay: !input delay_time
+        - delay: "{{ current_delay_time }}"
 mode: single
