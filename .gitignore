@@ -19,7 +19,6 @@
 /secrets.yaml
 /notify.yaml
 /zigbee2mqtt
-/blueprints
 /automations.yaml
 /configuration.yaml
 /scenes.yaml
@@ -28,3 +27,5 @@
 /dashboard
 /documentation
 
+blueprints/automation/homeassistant/motion_light.yaml
+blueprints/automation/homeassistant/notify_leaving_zone.yaml

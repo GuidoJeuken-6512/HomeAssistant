@@ -414,58 +414,58 @@
   #        data_type: int16
   #### new buffer sensors start ######################
   ##### Actual temperature of buffer set via modbus (min = 0°C; max = 90°C) (R/W)
-        - name: EU08L_Buff1_Actual_set_temperature
-          address: 3004
-          input_type: holding
-          unit_of_measurement: "°C"
-          state_class: total
-          scale: 0.1
-          precision: 1
-          data_type: int16 
-        - name: EU08L_Buffer_Request_Type
-          address: 3005
-          input_type: holding
-          unit_of_measurement: ""
-          state_class: total
-          scale: 1
-          precision: 0
-          data_type: uint16
-####Requested flow line temperature. (min = 0.0°C, max = 65.0°C) -> Valid value is reuqired! (R/W)          
-        - name: EU08L_Buff1_requested_flow_line_temperature
-          address: 3006
-          input_type: holding
-          unit_of_measurement: "°C"
-          state_class: total
-          scale: 0.1
-          precision: 1
-          data_type: int16  
-######Requested return line temperature. (min = 0.0°C, max = 60.0°C) -> Valid value is reuqired!          
-        - name: EU08L_Buff1_requested_return_line_temperature
-          address: 3007
-          input_type: holding
-          unit_of_measurement: "°C"
-          state_class: total
-          scale: 0.1
-          precision: 1
-          data_type: int16 
-####Requested temperature difference between flow line and return line. (min = 0.0K, max = 35.0K)  -> Valid value is reuqired! (R/W)          
-        - name: EU08L_Buff1_requested_dT
-          address: 3008
-          input_type: holding
-          unit_of_measurement: "°K"
-          state_class: total
-          scale: 0.1
-          precision: 1
-          data_type: int16 
-###Requested capacity (min = 0.0kW, max = 25,5kW)  -> Value is optional.    (R/W)      
-        - name: EU08L_Buff1_requested_capacity
-          address: 3009
-          input_type: holding
-          unit_of_measurement: "kW"
-          state_class: total
-          scale: 0.1
-          precision: 1
-          data_type: int16                                        
+#         - name: EU08L_Buff1_Actual_set_temperature
+#           address: 3004
+#           input_type: holding
+#           unit_of_measurement: "°C"
+#           state_class: total
+#           scale: 0.1
+#           precision: 1
+#           data_type: int16 
+#         - name: EU08L_Buffer_Request_Type
+#           address: 3005
+#           input_type: holding
+#           unit_of_measurement: ""
+#           state_class: total
+#           scale: 1
+#           precision: 0
+#           data_type: uint16
+# ####Requested flow line temperature. (min = 0.0°C, max = 65.0°C) -> Valid value is reuqired! (R/W)          
+#         - name: EU08L_Buff1_requested_flow_line_temperature
+#           address: 3006
+#           input_type: holding
+#           unit_of_measurement: "°C"
+#           state_class: total
+#           scale: 0.1
+#           precision: 1
+#           data_type: int16  
+# ######Requested return line temperature. (min = 0.0°C, max = 60.0°C) -> Valid value is reuqired!          
+#         - name: EU08L_Buff1_requested_return_line_temperature
+#           address: 3007
+#           input_type: holding
+#           unit_of_measurement: "°C"
+#           state_class: total
+#           scale: 0.1
+#           precision: 1
+#           data_type: int16 
+# ####Requested temperature difference between flow line and return line. (min = 0.0K, max = 35.0K)  -> Valid value is reuqired! (R/W)          
+#         - name: EU08L_Buff1_requested_dT
+#           address: 3008
+#           input_type: holding
+#           unit_of_measurement: "°K"
+#           state_class: total
+#           scale: 0.1
+#           precision: 1
+#           data_type: int16 
+# ###Requested capacity (min = 0.0kW, max = 25,5kW)  -> Value is optional.    (R/W)      
+#         - name: EU08L_Buff1_requested_capacity
+#           address: 3009
+#           input_type: holding
+#           unit_of_measurement: "kW"
+#           state_class: total
+#           scale: 0.1
+#           precision: 1
+#           data_type: int16                                        
   #### end new buffer sensors#####################
   #      - name: EU08L_Buff1_Set_temperature
   #        address: 3050

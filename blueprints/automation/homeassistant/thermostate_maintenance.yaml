@@ -1,0 +1,92 @@
+blueprint:
+  name: Thermostat Valve Maintenance Mode
+  description: >
+    This automation opens and closes all controllable thermostat valves
+    once a week to ensure they do not stick. The thermostats are then reset
+    to the original temperature.
+    The delay between the actions can be controlled, some thermostats (fritz) needs longer time to sync for changes.
+  domain: automation
+  input:
+    time:
+      name: Time
+      description: The time at which the automation should run.
+      selector:
+        time:
+    weekday:
+      name: Weekday
+      description: The day of the week on which the automation should run.
+      selector:
+        select:
+          options:
+            - mon
+            - tue
+            - wed
+            - thu
+            - fri
+            - sat
+            - sun
+    exclude_thermostats:
+      name: Thermostats to Exclude
+      description: Thermostats that should not be included in the maintenance mode.
+      selector:
+        entity:
+          domain: climate
+          multiple: true
+    delay_time:
+      name: Delay Time
+      description: The delay time between actions (in the format HH:MM:SS).
+      default: "00:05:00"
+      selector:
+        text:
+          type: text
+
+trigger:
+  - platform: time
+    at: !input time
+condition:
+  - condition: time
+    weekday: !input weekday
+action:
+  - variables:
+      thermostats: >
+        {{ states.climate | map(attribute='entity_id') | list }}
+      exclude_thermostats: !input exclude_thermostats
+  - variables:
+      original_temperatures: >
+        {% set temps = namespace(value=[]) %}
+        {% for thermostat in thermostats if thermostat not in exclude_thermostats %}
+          {% set temp = state_attr(thermostat, 'temperature') %}
+          {% if temp is not none %}
+            {% set temps.value = temps.value + [{'entity_id': thermostat, 'temperature': temp}] %}
+          {% endif %}
+        {% endfor %}
+        {{ temps.value }}
+  - repeat:
+      for_each: >
+        {{ thermostats | reject('in', exclude_thermostats) | list }}
+      sequence:
+        - service: climate.set_temperature
+          target:
+            entity_id: "{{ repeat.item }}"
+          data:
+            temperature: "{{ state_attr(repeat.item, 'max_temp') }}"
+  - delay: !input delay_time
+  - repeat:
+      for_each: >
+        {{ thermostats | reject('in', exclude_thermostats) | list }}
+      sequence:
+        - service: climate.set_temperature
+          target:
+            entity_id: "{{ repeat.item }}"
+          data:
+            temperature: "{{ state_attr(repeat.item, 'min_temp') }}"
+  - delay: !input delay_time
+  - repeat:
+      for_each: "{{ original_temperatures }}"
+      sequence:
+        - service: climate.set_temperature
+          target:
+            entity_id: "{{ repeat.item.entity_id }}"
+          data:
+            temperature: "{{ repeat.item.temperature }}"
+mode: single

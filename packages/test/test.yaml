@@ -1,0 +1,24 @@
+sensor:
+  - platform: template
+    sensors:
+      temperature_trend:
+        friendly_name: "Temperatur Trend"
+        value_template: >
+          {% set current_temp = states('sensor.eu08l_boil1_actual_low_temperature') | float %}
+          {% set last_temp = state_attr('sensor.eu08l_boil1_actual_low_temperature', 'last_updated') %}
+          {% if last_temp %}
+            {% set past_temp = states.sensor.eu08l_boil1_actual_low_temperature.attributes.last_changed %}
+            {% if (as_timestamp(now()) - as_timestamp(past_temp)) < 900 %}
+              {% if current_temp > (states('sensor.eu08l_boil1_actual_low_temperature', 'last_updated') | float) %}
+                "up"
+              {% elif current_temp < (states('sensor.eu08l_boil1_actual_low_temperature', 'last_updated') | float) %}
+                "down"
+              {% else %}
+                "stable"
+              {% endif %}
+            {% else %}
+              "stable"
+            {% endif %}
+          {% else %}
+            "stable"
+          {% endif %}
