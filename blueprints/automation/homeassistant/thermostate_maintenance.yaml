@@ -38,7 +38,6 @@ blueprint:
       selector:
         text:
           type: text
-
 trigger:
   - platform: time
     at: !input time
@@ -67,30 +66,40 @@ action:
         - variables:
             max_temp: "{{ state_attr(repeat.item, 'max_temp') }}"
             min_temp: "{{ state_attr(repeat.item, 'min_temp') }}"
-        - choose:
-            - conditions: "{{ max_temp is not none and max_temp <= 28 }}"
-              sequence:
-                - service: climate.set_temperature
-                  target:
-                    entity_id: "{{ repeat.item }}"
-                  data:
-                    temperature: "{{ max_temp }}"
+            curr_temp: "{{ state_attr(repeat.item, 'temperature') }}"
+        - service: notify.notify
+          data:
+            message: >
+              Thermostat: {{ repeat.item }}
+              Max Temp: {{ max_temp }}
+              Min Temp: {{ min_temp }}
+              Current Temp: {{ curr_temp }}
+        - service: climate.set_temperature
+          target:
+            entity_id: "{{ repeat.item }}"
+          data:
+            temperature: "{{ max_temp }}"
+          continue_on_error: true
         - delay: !input delay_time
-        - choose:
-            - conditions: "{{ min_temp is not none and min_temp >= 5 }}"
-              sequence:
-                - service: climate.set_temperature
-                  target:
-                    entity_id: "{{ repeat.item }}"
-                  data:
-                    temperature: "{{ min_temp }}"
+        - service: climate.set_temperature
+          target:
+            entity_id: "{{ repeat.item }}"
+          data:
+            temperature: "{{ min_temp }}"
+          continue_on_error: true
         - delay: !input delay_time
         - service: climate.set_temperature
           target:
             entity_id: "{{ repeat.item }}"
           data:
             temperature: >
-              {% set original_temp = original_temperatures | selectattr('entity_id', 'eq', repeat.item) | map(attribute='temperature') | first %}
-              {{ original_temp }}
+              {% if curr_temp > max_temp %}
+                {{ max_temp }}
+              {% elif curr_temp < min_temp %}
+                {{ min_temp }}
+              {% else %}
+                {{ curr_temp }}
+              {% endif %}
+          continue_on_error: true
         - delay: !input delay_time
 mode: single
