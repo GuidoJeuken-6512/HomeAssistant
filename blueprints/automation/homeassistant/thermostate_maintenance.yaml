@@ -4,7 +4,6 @@ blueprint:
     This automation opens and closes all controllable thermostat valves
     once a week to ensure they do not stick. The thermostats are then reset
     to the original temperature.
-    The delay between the actions can be controlled, some thermostats (fritz) needs longer time to sync for changes.
   domain: automation
   input:
     time:
@@ -70,17 +69,13 @@ action:
             entity_id: "{{ repeat.item }}"
           data:
             temperature: "{{ state_attr(repeat.item, 'max_temp') }}"
-  - delay: !input delay_time
-  - repeat:
-      for_each: >
-        {{ thermostats | reject('in', exclude_thermostats) | list }}
-      sequence:
+        - delay: !input delay_time
         - service: climate.set_temperature
           target:
             entity_id: "{{ repeat.item }}"
           data:
             temperature: "{{ state_attr(repeat.item, 'min_temp') }}"
-  - delay: !input delay_time
+        - delay: !input delay_time
   - repeat:
       for_each: "{{ original_temperatures }}"
       sequence:
@@ -89,4 +84,5 @@ action:
             entity_id: "{{ repeat.item.entity_id }}"
           data:
             temperature: "{{ repeat.item.temperature }}"
+        - delay: !input delay_time
 mode: single
