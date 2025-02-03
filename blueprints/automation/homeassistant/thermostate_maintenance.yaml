@@ -76,13 +76,12 @@ action:
           data:
             temperature: "{{ state_attr(repeat.item, 'min_temp') }}"
         - delay: !input delay_time
-  - repeat:
-      for_each: "{{ original_temperatures }}"
-      sequence:
         - service: climate.set_temperature
           target:
-            entity_id: "{{ repeat.item.entity_id }}"
+            entity_id: "{{ repeat.item }}"
           data:
-            temperature: "{{ repeat.item.temperature }}"
+            temperature: >
+              {% set original_temp = original_temperatures | selectattr('entity_id', 'eq', repeat.item) | map(attribute='temperature') | first %}
+              {{ original_temp }}
         - delay: !input delay_time
 mode: single
