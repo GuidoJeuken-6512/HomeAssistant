@@ -64,17 +64,26 @@ action:
       for_each: >
         {{ thermostats | reject('in', exclude_thermostats) | list }}
       sequence:
-        - service: climate.set_temperature
-          target:
-            entity_id: "{{ repeat.item }}"
-          data:
-            temperature: "{{ state_attr(repeat.item, 'max_temp') }}"
+        - variables:
+            max_temp: "{{ state_attr(repeat.item, 'max_temp') }}"
+            min_temp: "{{ state_attr(repeat.item, 'min_temp') }}"
+        - choose:
+            - conditions: "{{ max_temp is not none and max_temp <= 28 }}"
+              sequence:
+                - service: climate.set_temperature
+                  target:
+                    entity_id: "{{ repeat.item }}"
+                  data:
+                    temperature: "{{ max_temp }}"
         - delay: !input delay_time
-        - service: climate.set_temperature
-          target:
-            entity_id: "{{ repeat.item }}"
-          data:
-            temperature: "{{ state_attr(repeat.item, 'min_temp') }}"
+        - choose:
+            - conditions: "{{ min_temp is not none and min_temp >= 5 }}"
+              sequence:
+                - service: climate.set_temperature
+                  target:
+                    entity_id: "{{ repeat.item }}"
+                  data:
+                    temperature: "{{ min_temp }}"
         - delay: !input delay_time
         - service: climate.set_temperature
           target:
