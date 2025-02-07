@@ -27,6 +27,7 @@ blueprint:
     exclude_thermostats:
       name: Thermostats to Exclude
       description: Thermostats that should not be included in the maintenance mode.
+      default: []
       selector:
         entity:
           domain: climate
