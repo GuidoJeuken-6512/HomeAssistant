@@ -55,7 +55,7 @@
       data: {}
       target:
         entity_id:
-        - counter.eu8l_heat_pump_cycling_daily
+        - counter.eu08l_heat_pump_cycling_daily
         - counter.eu08l_hot_water_cycling_daily
     mode: single
   - id: '6543235'
