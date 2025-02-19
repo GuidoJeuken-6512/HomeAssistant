@@ -19,12 +19,12 @@
 ## climate sensor to be able to adjust the hot water temperature   
     climates:
         - name: Hot Water
-          address: 2050
+          address: 2002
           #input_type: holding
           #count: 1
           #data_type: int16
           max_temp: 60
-          min_temp: 40
+          min_temp: 20
           #offset: 0
           precision: 1
           scale: 0.1
@@ -35,7 +35,7 @@
           temperature_unit: C
         - name: EU08L_Hc1_Set_heating_mode_room_temperature
           target_temp_register: 5051
-          address: 2050
+          address: 5004
           max_temp: 35
           min_temp: 15
           #offset: 0
