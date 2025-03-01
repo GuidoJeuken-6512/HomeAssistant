@@ -29,3 +29,7 @@
 
 blueprints/automation/homeassistant/motion_light.yaml
 blueprints/automation/homeassistant/notify_leaving_zone.yaml
+solcast-sites.json
+solcast-undampened.json
+solcast-usage.json
+solcast.json
